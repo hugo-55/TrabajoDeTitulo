@@ -32,14 +32,14 @@ public class LoginFrame extends javax.swing.JFrame {
         } else{
             try{
                 con1 =  (Connection) conex.realizarConexion();
-                pst = con1.prepareStatement("select user_name , clave, tipo_usuario  from usuario where user_name ='" + User +
+                pst = con1.prepareStatement("select nombre_usuario , clave, tipo_usuario  from usuario where nombre_usuario ='" + User +
                         "' and clave ='"+ Pass +"'");
                 ResultSet rs = pst.executeQuery();
-                if (rs.next() && rs.getString("tipo_usuario").equals("gestor")){
+                if (rs.next() && rs.getString("tipo_usuario").equals("UTP")){
                     this.dispose();
                     new GestorFrame().setVisible(true);
                 } else{
-                    if ( rs.getString("tipo_usuario").equals("admin")){
+                    if ( rs.getString("tipo_usuario").equals("ADMIN")){
                         this.dispose();
                         new AdminFrame().setVisible(true);
                     } else{

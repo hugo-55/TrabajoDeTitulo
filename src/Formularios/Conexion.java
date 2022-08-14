@@ -3,7 +3,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 public class Conexion{
 
-    private final String URL = "jdbc:mysql://localhost:3306/bd_sistema_gestion";// Driver@MachineName:Port/SID
+    private final String URL = "jdbc:mysql://localhost:3306/bd_tt";// Driver@MachineName:Port/SID
     private final String USERID = "root";// USER ID
     private final String PASSW = "";// PASSW
 

@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 public class jfMatricular extends javax.swing.JFrame {
     Connection conex=null;
     Statement stm=null;
-    Conexion conex = new Conexion();
+   // Conexion conex = new Conexion();
     
     
     /**
