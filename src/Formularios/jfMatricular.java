@@ -21,7 +21,19 @@ public class jfMatricular extends javax.swing.JFrame {
      * Creates new form jfMatricular
      */
     public jfMatricular() {
+        conectar();
         initComponents();
+    }
+    public void conectar(){
+        String url="jdbc:mysql://localhost:3306/bd_tt";
+        String usuario="root";
+        String pass="";
+        try{
+            conex=DriverManager.getConnection(url,usuario,pass);
+            JOptionPane.showMessageDialog(null,"conectado","coneccion",1);
+        }catch(Exception ex){
+            System.out.println("ERROR de Conexion");
+        }
     }
 
     /**
@@ -39,10 +51,8 @@ public class jfMatricular extends javax.swing.JFrame {
         txtRutAlu = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtNomAlu = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
         txtFechaNac = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtEdad = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtAñoMatricula = new javax.swing.JTextField();
@@ -56,8 +66,8 @@ public class jfMatricular extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel11 = new javax.swing.JLabel();
-        txtMatricula = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtApeAlu = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,11 +78,9 @@ public class jfMatricular extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Matricular Alumno");
 
-        jLabel2.setText("Rut Alumno:");
+        jLabel2.setText("Rut:");
 
-        jLabel3.setText("Nombre Alumno:");
-
-        jLabel4.setText("Edad:");
+        jLabel3.setText("Nombre:");
 
         jLabel5.setText("Fecha Nacimiento:");
 
@@ -112,8 +120,13 @@ public class jfMatricular extends javax.swing.JFrame {
         jLabel10.setText("Grado: ");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A", "B", "C" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
-        jLabel11.setText("Número Matricula: ");
+        jLabel4.setText("Apellido:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -122,11 +135,20 @@ public class jfMatricular extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
+                        .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addGap(72, 72, 72)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtApeAlu, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtNomAlu, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtRutAlu, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel6)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(rbMasc)
@@ -134,19 +156,13 @@ public class jfMatricular extends javax.swing.JFrame {
                                         .addComponent(rbFem))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel2)
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(163, 163, 163))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addGap(18, 18, 18)
+                                            .addComponent(jLabel7)
+                                            .addComponent(jLabel8))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtNomAlu, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtRutAlu, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(txtAñoMatricula, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtVTC, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel9)
                                     .addComponent(jLabel10))
@@ -156,19 +172,14 @@ public class jfMatricular extends javax.swing.JFrame {
                                     .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel8))
-                                .addGap(29, 29, 29)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtAñoMatricula)
-                                    .addComponent(txtVTC, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(58, 58, 58)
-                                .addComponent(jLabel11)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtMatricula))))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(3, 3, 3)
+                                        .addComponent(jLabel1))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addGap(25, 25, 25)
+                                        .addComponent(txtFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(cmdMatricular)
@@ -180,11 +191,8 @@ public class jfMatricular extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(41, 41, 41)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel11)
-                    .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
+                .addComponent(jLabel1)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtRutAlu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
@@ -197,19 +205,19 @@ public class jfMatricular extends javax.swing.JFrame {
                     .addComponent(jLabel10)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
-                    .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtApeAlu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(rbMasc)
                     .addComponent(rbFem))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtAñoMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
@@ -217,11 +225,11 @@ public class jfMatricular extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtVTC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addGap(22, 22, 22)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdMatricular)
                     .addComponent(cmdSalir))
-                .addGap(40, 40, 40))
+                .addGap(108, 108, 108))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -242,21 +250,23 @@ public class jfMatricular extends javax.swing.JFrame {
 
     private void cmdMatricularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMatricularActionPerformed
         //Textos para Alumnos.
-        String rut=txtRutAlu.getText(),nom=txtNomAlu.getText(),sexo="",curso="";
+        String rut=txtRutAlu.getText(),nom=txtNomAlu.getText(),ape=txtApeAlu.getText(),sexo="",curso="";
         //Numeros para Alumnos
-        Integer edad=Integer.parseInt(txtEdad.getText());
+        //Integer edad=Integer.parseInt(txtEdad.getText());
         String fecha=txtFechaNac.getText();
         //Numeros para Matricula
         Integer añoM=Integer.parseInt(txtAñoMatricula.getText());
         Integer vtc=Integer.parseInt(txtVTC.getText());
-        Integer matricula=Integer.parseInt(txtMatricula.getText());
+        //Integer matricula=Integer.parseInt(txtMatricula.getText());
         if(rbFem.isSelected()){
-            sexo=rbFem.getText();
+            //sexo=rbFem.getText();
+            sexo="F";
         }else{
-            sexo=rbMasc.getText();
+            //sexo=rbMasc.getText();
+            sexo="M";
         }
         curso=String.valueOf(cmbCurso.getSelectedItem());
-        String inser="INSERT INTO alumnos(rut_estudiante,nombre,edad,fecha_nacimiento,sexo) VALUES ('"+ rut +"','"+ nom +"','"+ edad +"','"+ fecha +"','"+ sexo+"')";
+        String inser="INSERT INTO estudiante(rut_estudiante,nombres,apellidos,fecha_nacimiento,sexo) VALUES ('"+ rut +"','"+ nom +"','"+ape+"','"+ fecha +"','"+ sexo+"')";
         try{
             stm=conex.createStatement();
             stm.executeUpdate(inser);
@@ -282,6 +292,10 @@ public class jfMatricular extends javax.swing.JFrame {
     private void cmbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCursoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbCursoActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -325,7 +339,6 @@ public class jfMatricular extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -337,10 +350,9 @@ public class jfMatricular extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton rbFem;
     private javax.swing.JRadioButton rbMasc;
+    private javax.swing.JTextField txtApeAlu;
     private javax.swing.JTextField txtAñoMatricula;
-    private javax.swing.JTextField txtEdad;
     private javax.swing.JTextField txtFechaNac;
-    private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtNomAlu;
     private javax.swing.JTextField txtRutAlu;
     private javax.swing.JTextField txtVTC;

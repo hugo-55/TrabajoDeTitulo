@@ -35,7 +35,6 @@ public class GestorFrame extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Hugo\\Desktop\\fondo1.jpg")); // NOI18N
         jLabel2.setText("jLabel2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -47,6 +46,11 @@ public class GestorFrame extends javax.swing.JFrame {
         jLabel1.setPreferredSize(new java.awt.Dimension(50, 20));
 
         jButton1.setText("Cursos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Matriculas");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -130,6 +134,10 @@ public class GestorFrame extends javax.swing.JFrame {
         jfAlumnos fra = new jfAlumnos();
         fra.setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
