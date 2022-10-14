@@ -266,7 +266,7 @@ public class jfMatricular extends javax.swing.JFrame {
         /*String[] rutSep = rut.split("-");
         int rutNum = Integer.parseInt(rutSep[1]);
         Object[] rutObjeto= new Object[]{
-            rut,
+            rutSep[0],
         };
         invertir(rutObjeto);
         int a = 2;
@@ -305,6 +305,13 @@ public class jfMatricular extends javax.swing.JFrame {
             sexo="M";
         }
         curso=String.valueOf(cmbCurso.getSelectedItem());
+        //Ultima Verificacion que no funciona xd
+        /*if (Digito.equals(rutSep[1])){
+            System.out.println(Digito +"1era parte");
+        }else{
+            System.out.println(Digito + "2da parte");
+            //JOptionPane.showMessageDialog(null, "Rut Incorrecto","Incorrecto",1);
+        }*/
         String inser="INSERT INTO estudiante(rut_estudiante,nombres,apellidos,fecha_nacimiento,sexo) VALUES ('"+ rut +"','"+ nom +"','"+ape+"','"+ fecha +"','"+ sexo+"')";
         try{
             stm=conex.createStatement();
@@ -313,6 +320,14 @@ public class jfMatricular extends javax.swing.JFrame {
         }catch(SQLException ei){
             JOptionPane.showMessageDialog(null, "Error en ingreso"+ei,"Insert",3);
         }
+        /*String inser="INSERT INTO estudiante(rut_estudiante,nombres,apellidos,fecha_nacimiento,sexo) VALUES ('"+ rut +"','"+ nom +"','"+ape+"','"+ fecha +"','"+ sexo+"')";
+        try{
+            stm=conex.createStatement();
+            stm.executeUpdate(inser);
+            JOptionPane.showMessageDialog(null, "Datos Ingresados","Ingreso",1);
+        }catch(SQLException ei){
+            JOptionPane.showMessageDialog(null, "Error en ingreso"+ei,"Insert",3);
+        }*/
         //Ingreso Datos Matricula
         /*String insert="INSERT INTO matricula(id_matricula,cod_curso,rut_estudiante,año,vtc) VALUES ('"+matricula+"','"+curso+"','"+ rut +"','" +añoM+"','"+vtc+")";
         try{
