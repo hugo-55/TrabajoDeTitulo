@@ -247,10 +247,49 @@ public class jfMatricular extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    //Dando Vuelta el Rut para verificarlo
+    public static Object[] invertir(Object[] array) {
+        Object[] invertir_int = new Object[array.length];
+        int maximo = array.length;
 
+        for (int i = 0; i < array.length; i++) {
+            Object j = array[maximo - 1];
+            invertir_int[maximo - 1] = array[i];
+            maximo--;
+            }
+        return invertir_int;
+    }
     private void cmdMatricularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMatricularActionPerformed
+        //Separando el rut del digito Verificador y pasandolo a Integer
+        String rut=txtRutAlu.getText();
+        //Validacion del Digito Verificador, tirar error Exception in thread "AWT-EventQueue-0" java.lang.NumberFormatException
+        /*String[] rutSep = rut.split("-");
+        int rutNum = Integer.parseInt(rutSep[1]);
+        Object[] rutObjeto= new Object[]{
+            rut,
+        };
+        invertir(rutObjeto);
+        int a = 2;
+        String Digito = "";
+        for (int i = 0; i < invertir(rutObjeto).length; i++) {
+            invertir(rutObjeto)[i] = Integer.parseInt((String) invertir(rutObjeto)[i]) * a;
+            int rutSumado = 0;
+            rutSumado += Integer.parseInt(String.valueOf(invertir(rutObjeto)[i]));
+            if (a == 7) {
+                a = 1;
+            }
+            a++;
+            int resto = rutSumado % 11;
+            Digito = String.valueOf(11 - resto);
+        };
+        if (Digito.equals(rutSep[1])){
+            rut=txtRutAlu.getText();
+        }else{
+            JOptionPane.showMessageDialog(null, "Rut Incorrecto","Incorrecto",1);
+        }*/
+                
         //Textos para Alumnos.
-        String rut=txtRutAlu.getText(),nom=txtNomAlu.getText(),ape=txtApeAlu.getText(),sexo="",curso="";
+        String nom=txtNomAlu.getText(),ape=txtApeAlu.getText(),sexo="",curso="";
         //Numeros para Alumnos
         //Integer edad=Integer.parseInt(txtEdad.getText());
         String fecha=txtFechaNac.getText();
@@ -284,6 +323,7 @@ public class jfMatricular extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error en ingreso"+ei,"Insert",3);
         }*/
     }//GEN-LAST:event_cmdMatricularActionPerformed
+    
 
     private void cmdSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdSalirActionPerformed
         System.exit(0);
