@@ -6,6 +6,7 @@ package Formularios;
 
 import java.sql.*;
 import javax.swing.JOptionPane;
+import Formularios.Validacion_RUT;
 
 /**
  *
@@ -79,6 +80,12 @@ public class jfMatricular extends javax.swing.JFrame {
         jLabel1.setText("Matricular Alumno");
 
         jLabel2.setText("Rut:");
+
+        txtRutAlu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtRutAluActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Nombre:");
 
@@ -162,7 +169,7 @@ public class jfMatricular extends javax.swing.JFrame {
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtAñoMatricula, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(txtVTC, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel9)
                                     .addComponent(jLabel10))
@@ -225,7 +232,7 @@ public class jfMatricular extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtVTC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdMatricular)
                     .addComponent(cmdSalir))
@@ -242,7 +249,7 @@ public class jfMatricular extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 441, Short.MAX_VALUE)
         );
 
         pack();
@@ -260,33 +267,20 @@ public class jfMatricular extends javax.swing.JFrame {
         return invertir_int;
     }
     private void cmdMatricularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMatricularActionPerformed
-        //Separando el rut del digito Verificador y pasandolo a Integer
+       
         String rut=txtRutAlu.getText();
-        //Validacion del Digito Verificador, tirar error Exception in thread "AWT-EventQueue-0" java.lang.NumberFormatException
-        /*String[] rutSep = rut.split("-");
-        int rutNum = Integer.parseInt(rutSep[1]);
-        Object[] rutObjeto= new Object[]{
-            rutSep[0],
-        };
-        invertir(rutObjeto);
-        int a = 2;
-        String Digito = "";
-        for (int i = 0; i < invertir(rutObjeto).length; i++) {
-            invertir(rutObjeto)[i] = Integer.parseInt((String) invertir(rutObjeto)[i]) * a;
-            int rutSumado = 0;
-            rutSumado += Integer.parseInt(String.valueOf(invertir(rutObjeto)[i]));
-            if (a == 7) {
-                a = 1;
-            }
-            a++;
-            int resto = rutSumado % 11;
-            Digito = String.valueOf(11 - resto);
-        };
-        if (Digito.equals(rutSep[1])){
-            rut=txtRutAlu.getText();
-        }else{
-            JOptionPane.showMessageDialog(null, "Rut Incorrecto","Incorrecto",1);
-        }*/
+        Validacion_RUT Validacion;
+        Validacion = new Validacion_RUT(rut);
+         
+         if(Validacion.Validacion_Concreta() == true){
+             
+             System.out.println("El rut Es Valido");
+         
+         }else{
+         
+             System.out.println("El rut es Invalido");
+         
+         }
                 
         //Textos para Alumnos.
         String nom=txtNomAlu.getText(),ape=txtApeAlu.getText(),sexo="",curso="";
@@ -351,6 +345,10 @@ public class jfMatricular extends javax.swing.JFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void txtRutAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRutAluActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRutAluActionPerformed
 
     /**
      * @param args the command line arguments
