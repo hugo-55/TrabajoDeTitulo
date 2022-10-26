@@ -274,11 +274,12 @@ public class jfMatricular extends javax.swing.JFrame {
          
          if(Validacion.Validacion_Concreta() == true){
              
-             System.out.println("El rut Es Valido");
+             JOptionPane.showMessageDialog(null, "El rut es valido");
+
          
          }else{
          
-             System.out.println("El rut es Invalido");
+               JOptionPane.showMessageDialog(null, "El rut es Invalido");
          
          }
                 
