@@ -135,6 +135,12 @@ public class jfMatricular extends javax.swing.JFrame {
 
         jLabel4.setText("Apellido:");
 
+        txtApeAlu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtApeAluActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -350,6 +356,10 @@ public class jfMatricular extends javax.swing.JFrame {
     private void txtRutAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRutAluActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRutAluActionPerformed
+
+    private void txtApeAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApeAluActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtApeAluActionPerformed
 
     /**
      * @param args the command line arguments
