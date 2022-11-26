@@ -1,8 +1,6 @@
 package Formularios;
 
 import com.mysql.jdbc.Connection;
-import java.awt.event.MouseEvent;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.*;
 import javax.swing.JOptionPane;
@@ -15,37 +13,35 @@ public class LoginFrame extends javax.swing.JFrame {
   
     public LoginFrame() {
         initComponents();
-        if(conn != null){
-            JOptionPane.showMessageDialog(null, "conectado");
-        }else{
-            JOptionPane.showMessageDialog(null, "error conexion");
-        }
     }
     
     public void ingresar(){
         Connection con1 = null;
         PreparedStatement pst = null;
         String User  = txt_usuario.getText();
-        String Pass = txt_pass.getText();
+        String Pass = String.valueOf(txt_pass.getPassword());
+        
         if (User.equals("") || Pass.equals("")){
             JOptionPane.showMessageDialog(this,"uno o mas campos estan vacios , favor de rellenarlos " );
         } else{
             try{
                 con1 =  (Connection) conex.realizarConexion();
-                pst = con1.prepareStatement("select nombre_usuario , clave, tipo_usuario  from usuario where nombre_usuario ='" + User +
+                pst = conn.prepareStatement("select nombre_usuario , clave, tipo_usuario  from usuario where nombre_usuario ='" + User +
                         "' and clave ='"+ Pass +"'");
                 ResultSet rs = pst.executeQuery();
-                if (rs.next() && rs.getString("tipo_usuario").equals("UTP")){
-                    this.dispose();
-                    new GestorFrame().setVisible(true);
-                } else{
-                    if ( rs.getString("tipo_usuario").equals("ADMIN")){
+                
+                if(rs.next()){
+                    if(rs.getString("tipo_usuario").equals("UTP")){
+                        this.dispose();
+                        new GestorFrame().setVisible(true);
+                    }else if(rs.getString("tipo_usuario").equals("ADMIN")){
                         this.dispose();
                         new AdminFrame().setVisible(true);
-                    } else{
-                        JOptionPane.showMessageDialog(this, "Credenciales incorrectas. vuelve a intentar de nuevo."); 
-                                } 
-                        }
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(this, "Credenciales incorrectas. vuelve a intentar de nuevo.");
+                }
+                
             }catch(SQLException e){
                 System.err.print(e.toString());
                 JOptionPane.showMessageDialog(this, "ocurrio un error inesperado.\nFavor comunicarse con el administrador");
@@ -71,6 +67,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(102, 0, 153));
         jPanel1.setLayout(null);
 
         btn_ingresar.setText("Ingresar ");
@@ -85,7 +82,7 @@ public class LoginFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btn_ingresar);
-        btn_ingresar.setBounds(51, 323, 100, 29);
+        btn_ingresar.setBounds(51, 323, 100, 30);
 
         btn_salir.setText("Salir");
         btn_salir.addActionListener(new java.awt.event.ActionListener() {
@@ -94,35 +91,42 @@ public class LoginFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btn_salir);
-        btn_salir.setBounds(290, 320, 100, 29);
+        btn_salir.setBounds(250, 323, 100, 30);
 
+        txt_pass.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 204, 255)));
         txt_pass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_passActionPerformed(evt);
             }
         });
         jPanel1.add(txt_pass);
-        txt_pass.setBounds(160, 161, 225, 26);
-        jPanel1.add(txt_usuario);
-        txt_usuario.setBounds(160, 117, 225, 26);
+        txt_pass.setBounds(200, 210, 170, 20);
 
+        txt_usuario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 204, 255)));
+        jPanel1.add(txt_usuario);
+        txt_usuario.setBounds(200, 150, 170, 20);
+
+        lbl_usuario.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lbl_usuario.setForeground(new java.awt.Color(255, 255, 255));
         lbl_usuario.setText("Usuario       : ");
         jPanel1.add(lbl_usuario);
-        lbl_usuario.setBounds(51, 120, 100, 20);
+        lbl_usuario.setBounds(40, 150, 80, 20);
 
+        lbl_pass.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lbl_pass.setForeground(new java.awt.Color(255, 255, 255));
         lbl_pass.setText("Contraseña  : ");
         jPanel1.add(lbl_pass);
-        lbl_pass.setBounds(51, 164, 100, 20);
+        lbl_pass.setBounds(40, 210, 80, 20);
 
-        lbl_titulo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbl_titulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lbl_titulo.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_titulo.setText("Sistema de estadistica de matriculas y asistencias ");
+        lbl_titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_titulo.setText("<html><body><p>Sistema de estadistica de matriculas <br> y asistencias</p></body></html>");
+        lbl_titulo.setToolTipText("");
         jPanel1.add(lbl_titulo);
-        lbl_titulo.setBounds(30, 30, 380, 40);
+        lbl_titulo.setBounds(40, 20, 360, 70);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Hugo\\Desktop\\fondo1.jpg")); // NOI18N
+        jLabel1.setBackground(new java.awt.Color(153, 0, 153));
         jPanel1.add(jLabel1);
         jLabel1.setBounds(0, 0, 440, 440);
 
@@ -149,14 +153,14 @@ public class LoginFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_passActionPerformed
 
     private void btn_ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ingresarActionPerformed
-                   // TODO add your handling code here:
+        ingresar();
     }//GEN-LAST:event_btn_ingresarActionPerformed
 
     private void btn_ingresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ingresarMouseClicked
         // TODO add your handling code here:
-        if(MouseEvent.BUTTON1 == evt.getButton()){
+        /*if(MouseEvent.BUTTON1 == evt.getButton()){
             ingresar();
-        }
+        }*/
     }//GEN-LAST:event_btn_ingresarMouseClicked
 
     
