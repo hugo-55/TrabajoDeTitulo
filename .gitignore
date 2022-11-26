@@ -4,6 +4,7 @@ build/
 nbbuild/
 dist/
 nbdist/
+src/Formularios/Conexion.java
 nbactions.xml
 nb-configuration.xml
 # Class Files #
