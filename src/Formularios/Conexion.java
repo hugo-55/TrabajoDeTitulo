@@ -6,7 +6,7 @@ public class Conexion{
     private final String URL = "jdbc:mysql://localhost:3306/tt_hugo";// Driver@MachineName:Port/SID
     private final String USERID = "root";// USER ID
     private final String PASSW = "";// PASSW
-
+    private int a = 1;
     public Conexion() {
     }
     
