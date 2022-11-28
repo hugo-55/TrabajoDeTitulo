@@ -76,6 +76,8 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
         btn_eliminar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         txt_codigo_establecimiento = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        txt_rut = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_establecimiento = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
@@ -119,8 +121,15 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
         btn_modificar.setText("Modificar");
 
         btn_eliminar.setText("Eliminar");
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Codigo del Establecimiento:");
+
+        jLabel10.setText("Rut :");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -170,9 +179,13 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
                                         .addGap(0, 0, Short.MAX_VALUE))
                                     .addComponent(txt_codigo_establecimiento)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel10))
                                 .addGap(18, 18, 18)
-                                .addComponent(txt_password)))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txt_password)
+                                    .addComponent(txt_rut))))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -196,11 +209,15 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_nom_admin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(txt_rut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(cmb_tipo_admin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -286,6 +303,10 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_busquedaActionPerformed
 
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        eliminarDatos();
+    }//GEN-LAST:event_btn_eliminarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -299,13 +320,13 @@ public void insertarDatos(){
         pst.setString(3 , txt_codigo_establecimiento.getText());
         
         
-        String SQL2= "insert into usuario(nombre_usuario,tipo_usuario,clave) values (?,?,?) ";
+        String SQL2= "insert into usuario(nombre_usuario,tipo_usuario,clave,rut_admin) values (?,?,?,?) ";
         PreparedStatement pst2 =  conn.prepareStatement(SQL2);
         pst2.setString(1 , txt_nom_admin.getText());
         int seleccionado2 =cmb_tipo_admin.getSelectedIndex();
         pst2.setString(2 , cmb_tipo_admin.getItemAt(seleccionado2));
         pst2.setString(3 , txt_password.getText());
-        
+        pst2.setString(4 , txt_rut.getText());
         
         pst2.execute();
         String ultimo_usuario = "select max(id_usuario) as id from usuario";
@@ -318,12 +339,39 @@ public void insertarDatos(){
             pst.setInt(4 , id_usuario);
             pst.execute();
          } 
-        
+        llenarTabla();
         JOptionPane.showMessageDialog(null,"Registro exitoso");
         
     }catch(Exception e){
         JOptionPane.showMessageDialog(null,"error de registro" +e.getMessage());
 }
+
+}
+public void eliminarDatos(){
+    if(tbl_establecimiento.getSelectedRow() == -1){
+            JOptionPane.showMessageDialog(null, "No has seleccionado una fila", "Seleccione una fila", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+    DefaultTableModel mdl = (DefaultTableModel) tbl_establecimiento.getModel();
+    String codigo = String.valueOf(mdl.getValueAt(tbl_establecimiento.getSelectedRow(), 0));
+    int opcion = JOptionPane.showConfirmDialog(null, "¿Estas Seguro de Eliminar este esblecimiento ?", "Eliminacion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+   
+    switch(opcion){
+            case 0: {
+                String cons = "DELETE FROM establecimiento WHERE id_establecimiento =' "+codigo+ " ' ";
+                try {
+                    Statement stm = conn.createStatement();
+                    stm.executeUpdate(cons);
+                    JOptionPane.showMessageDialog(null, "Se ha eliminado Correctamente","Eliminacion Concretada", JOptionPane.INFORMATION_MESSAGE);
+                    llenarTabla();
+                } catch (SQLException e) {                
+                    JOptionPane.showMessageDialog(null, "No se Pudo Eliminar", "Eliminacion Fallida", JOptionPane.ERROR_MESSAGE);
+                }
+                break;
+            }
+            case 2: JOptionPane.showMessageDialog(null, "Eliminacion Cancelada", "Eliminacion Cancelada",JOptionPane.INFORMATION_MESSAGE);
+            break;
+        }
 }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -365,6 +413,7 @@ public void insertarDatos(){
     private javax.swing.JComboBox<String> cmb_tipo_admin;
     private javax.swing.JComboBox<String> cmb_tipo_educacion;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -381,5 +430,6 @@ public void insertarDatos(){
     private javax.swing.JTextField txt_nom_admin;
     private javax.swing.JTextField txt_nombre;
     private javax.swing.JPasswordField txt_password;
+    private javax.swing.JTextField txt_rut;
     // End of variables declaration//GEN-END:variables
 }

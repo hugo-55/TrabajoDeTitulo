@@ -6,10 +6,7 @@
 
 package Formularios;
 
-/**
- *
- * @author Seba
- */
+
 public class Validacion_RUT {
     
     String RUT;
