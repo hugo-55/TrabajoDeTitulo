@@ -238,6 +238,12 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
                 "Codigo", "Nombre", "Tipo Educacion", "Administrador"
             }
         ));
+        tbl_establecimiento.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tbl_establecimiento.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_establecimientoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_establecimiento);
 
         jLabel7.setText("Busqueda:");
@@ -260,7 +266,7 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 654, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 10, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -306,6 +312,32 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
         eliminarDatos();
     }//GEN-LAST:event_btn_eliminarActionPerformed
+
+    private void tbl_establecimientoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_establecimientoMouseClicked
+        // TODO add your handling code here:
+       if(tbl_establecimiento.getSelectedRow()>=0){
+          try{
+          DefaultTableModel tm = (DefaultTableModel)tbl_establecimiento.getModel();
+          String codigo = String.valueOf(tm.getValueAt(tbl_establecimiento.getSelectedRow(),0));
+          String nombre = String.valueOf(tm.getValueAt(tbl_establecimiento.getSelectedRow(),1));
+          String tipo_educacion = String.valueOf(tm.getValueAt(tbl_establecimiento.getSelectedRow(),2));
+          String admin = String.valueOf(tm.getValueAt(tbl_establecimiento.getSelectedRow(),3));
+          
+          txt_codigo_establecimiento.setText(codigo);
+          txt_nombre.setText(nombre);
+          txt_nom_admin.setText(admin);
+          cmb_tipo_educacion.setSelectedItem(tipo_educacion);
+          
+          
+          }catch(Exception e){
+          JOptionPane.showMessageDialog(this,"NO CONTIENE UN  ESTABLECIMIENTO ");
+          }
+         
+       }else{
+        JOptionPane.showMessageDialog(this,"DEBE SELECCIONAR UN ESTABLECIMIENTO","SISTEMA",JOptionPane.WARNING_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_tbl_establecimientoMouseClicked
 
     /**
      * @param args the command line arguments
