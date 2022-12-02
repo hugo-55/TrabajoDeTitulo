@@ -6,25 +6,69 @@ package Formularios;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Hugo
  */
 public class jfAlumnos extends javax.swing.JFrame {
-    Connection conex=null;
+    //Connection conex=null;
     Statement stm=null;
+    Conexion conex = new Conexion();
+    Connection conn = (Connection) conex.realizarConexion();
 
     /**
      * Creates new form jfAlumnos
      */
     public jfAlumnos() {
-        conectar();
+        //conectar();
         initComponents();
+        llenarTabla();
+        /*-------------------- Definicion de tabla ----------------------*/
+        /*try{
+            stm = conn.createStatement();
+            ResultSet result  = stm.executeQuery(sql);
+            
+            while (result.next()){
+                System.out.println(result.getString(0));
+            }
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Error al conectarse a la Base de Datos", "Error de Conexion", JOptionPane.ERROR_MESSAGE);
+        }*/
     }
-    public void conectar(){
+    public void llenarTabla(){
+        DefaultTableModel model = new DefaultTableModel();
+        
+        jTableAlu.setModel(model);
+        
+        model.addColumn("Rut");
+        model.addColumn("Nombre");
+        model.addColumn("Apellido");
+        model.addColumn("Fecha Nacimiento");
+        model.addColumn("Genero");
+        
+        
+        try{
+            String sql = "SELECT * FROM estudiante";
+            String[] datos = new String[4];
+            stm = conn.createStatement();
+            ResultSet res = stm.executeQuery(sql);
+            while(res.next()){
+                model.addRow( new Object[]{
+                    res.getString("rut_estudiante"), res.getString("nombres"), res.getString("apellidos"), res.getString("fecha_nacimiento"), res.getString("sexo")
+                });
+            }
+                jTableAlu.setModel(model);
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "Error al Cargar la Lista "+ex, "Error de Carga", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    /*public void conectar(){
         String url="jdbc:mysql://localhost:3306/bd_tt";
         String usuario="root";
         String pass="";
@@ -34,7 +78,7 @@ public class jfAlumnos extends javax.swing.JFrame {
         }catch(Exception ex){
             System.out.println("ERROR de Conexion");
         }
-    }
+    }*/
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,7 +96,9 @@ public class jfAlumnos extends javax.swing.JFrame {
         cmdModificarAlu = new javax.swing.JButton();
         cmdEliminarAlu = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableAlu = new javax.swing.JTable();
+        cmdModificarAlu1 = new javax.swing.JButton();
+        cmdEliminarAlu1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,36 +117,47 @@ public class jfAlumnos extends javax.swing.JFrame {
 
         cmdEliminarAlu.setText("Eliminar");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        jScrollPane1.setViewportView(jTableAlu);
+
+        cmdModificarAlu1.setText("Agregar");
+        cmdModificarAlu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdModificarAlu1ActionPerformed(evt);
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        });
+
+        cmdEliminarAlu1.setText("Atras");
+        cmdEliminarAlu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdEliminarAlu1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(269, 269, 269)
-                        .addComponent(cmdModificarAlu)
-                        .addGap(29, 29, 29)
-                        .addComponent(cmdEliminarAlu))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(74, 74, 74)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(56, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(74, 74, 74)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(cmdModificarAlu1)
+                                        .addComponent(cmdModificarAlu, javax.swing.GroupLayout.Alignment.TRAILING))
+                                    .addComponent(cmdEliminarAlu, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(cmdEliminarAlu1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,12 +165,17 @@ public class jfAlumnos extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmdModificarAlu)
-                    .addComponent(cmdEliminarAlu))
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(cmdModificarAlu1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmdModificarAlu)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmdEliminarAlu))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(cmdEliminarAlu1)
+                .addGap(69, 69, 69))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -135,6 +197,15 @@ public class jfAlumnos extends javax.swing.JFrame {
     private void cmdModificarAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdModificarAluActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmdModificarAluActionPerformed
+
+    private void cmdModificarAlu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdModificarAlu1ActionPerformed
+        jfAgregarAlu fra = new jfAgregarAlu();
+        fra.setVisible(true);
+    }//GEN-LAST:event_cmdModificarAlu1ActionPerformed
+
+    private void cmdEliminarAlu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEliminarAlu1ActionPerformed
+        dispose();
+    }//GEN-LAST:event_cmdEliminarAlu1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -173,12 +244,14 @@ public class jfAlumnos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdEliminarAlu;
+    private javax.swing.JButton cmdEliminarAlu1;
     private javax.swing.JButton cmdModificarAlu;
+    private javax.swing.JButton cmdModificarAlu1;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableAlu;
     // End of variables declaration//GEN-END:variables
 }

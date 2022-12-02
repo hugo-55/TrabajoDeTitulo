@@ -8,7 +8,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import Formularios.Validacion_RUT;
 import java.util.Date;
-
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -54,15 +54,15 @@ public class jfAgregarAlu extends javax.swing.JFrame {
         txtRutAlu = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtNomAlu = new javax.swing.JTextField();
-        txtFechaNac = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         cmdMatricular = new javax.swing.JButton();
-        cmdSalir = new javax.swing.JButton();
+        cmdAtras = new javax.swing.JButton();
         rbMasc = new javax.swing.JRadioButton();
         rbFem = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
         txtApeAlu = new javax.swing.JTextField();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -83,12 +83,6 @@ public class jfAgregarAlu extends javax.swing.JFrame {
 
         jLabel3.setText("Nombre:");
 
-        txtFechaNac.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFechaNacActionPerformed(evt);
-            }
-        });
-
         jLabel5.setText("Fecha Nacimiento:");
 
         jLabel6.setText("Sexo:");
@@ -100,10 +94,10 @@ public class jfAgregarAlu extends javax.swing.JFrame {
             }
         });
 
-        cmdSalir.setText("Salir");
-        cmdSalir.addActionListener(new java.awt.event.ActionListener() {
+        cmdAtras.setText("Atras");
+        cmdAtras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdSalirActionPerformed(evt);
+                cmdAtrasActionPerformed(evt);
             }
         });
 
@@ -118,6 +112,8 @@ public class jfAgregarAlu extends javax.swing.JFrame {
                 txtApeAluActionPerformed(evt);
             }
         });
+
+        jDateChooser1.setDateFormatString("dd-MM-yyyy");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -135,65 +131,58 @@ public class jfAgregarAlu extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(72, 72, 72)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtApeAlu, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNomAlu, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtRutAlu, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtApeAlu, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                            .addComponent(txtNomAlu, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                            .addComponent(txtRutAlu, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(75, 75, 75)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(cmdMatricular)
-                                    .addGap(28, 28, 28)
-                                    .addComponent(cmdSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(rbMasc)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(rbFem)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(119, 119, 119)
-                                .addComponent(txtFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(cmdMatricular)
+                                .addGap(28, 28, 28)
+                                .addComponent(cmdAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(rbMasc)
+                                .addGap(18, 18, 18)
+                                .addComponent(rbFem)))))
+                .addContainerGap(101, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addComponent(jLabel1)
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtRutAlu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtNomAlu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtApeAlu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtRutAlu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(rbMasc)
+                            .addComponent(rbFem))
+                        .addGap(43, 43, 43)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtNomAlu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtApeAlu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addGap(22, 22, 22)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(rbMasc)
-                                    .addComponent(rbFem))
-                                .addGap(43, 43, 43)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(cmdMatricular)
-                                    .addComponent(cmdSalir))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                            .addComponent(cmdMatricular)
+                            .addComponent(cmdAtras))))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -216,9 +205,9 @@ public class jfAgregarAlu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtApeAluActionPerformed
 
-    private void cmdSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdSalirActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_cmdSalirActionPerformed
+    private void cmdAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAtrasActionPerformed
+        dispose();
+    }//GEN-LAST:event_cmdAtrasActionPerformed
 
     private void cmdMatricularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMatricularActionPerformed
 
@@ -244,6 +233,9 @@ public class jfAgregarAlu extends javax.swing.JFrame {
         //java.util.Date utilPackageDate = new java.util.Date();
         //java.sql.Date sqlPackageDate = new java.sql.Date(jDateChooser1.getDate());
         //Date fecha = jDateChooser1.getDate();
+        SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+        String fecha =  format1.format(jDateChooser1.getDate());
+        //Date fecha_nacimiento = format1.parse(fecha);
         //Numeros para Matricula
         //Integer añoM=Integer.parseInt(txtAñoMatricula.getText());
         //Integer vtc=Integer.parseInt(txtVTC.getText());
@@ -264,10 +256,10 @@ public class jfAgregarAlu extends javax.swing.JFrame {
             System.out.println(Digito + "2da parte");
             //JOptionPane.showMessageDialog(null, "Rut Incorrecto","Incorrecto",1);
         }*/
-        //String inser="INSERT INTO estudiante(rut_estudiante,nombres,apellidos,fecha_nacimiento,sexo) VALUES ('"+ rut +"','"+ nom +"','"+ape+"','"+ fecha +"','"+ sexo+"')";
+        String inser="INSERT INTO estudiante(rut_estudiante,nombres,apellidos,fecha_nacimiento,sexo) VALUES ('"+ rut +"','"+ nom +"','"+ape+"','"+ fecha +"','"+ sexo+"')";
         try{
             stm=conex.createStatement();
-            //stm.executeUpdate(inser);
+            stm.executeUpdate(inser);
             JOptionPane.showMessageDialog(null, "Datos Ingresados","Ingreso",1);
         }catch(SQLException ei){
             JOptionPane.showMessageDialog(null, "Error en ingreso"+ei,"Insert",3);
@@ -294,10 +286,6 @@ public class jfAgregarAlu extends javax.swing.JFrame {
     private void txtRutAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRutAluActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRutAluActionPerformed
-
-    private void txtFechaNacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaNacActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFechaNacActionPerformed
     //Dando Vuelta el Rut para verificarlo
     public static Object[] invertir(Object[] array) {
         Object[] invertir_int = new Object[array.length];
@@ -348,8 +336,9 @@ public class jfAgregarAlu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cmdAtras;
     private javax.swing.JButton cmdMatricular;
-    private javax.swing.JButton cmdSalir;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -360,7 +349,6 @@ public class jfAgregarAlu extends javax.swing.JFrame {
     private javax.swing.JRadioButton rbFem;
     private javax.swing.JRadioButton rbMasc;
     private javax.swing.JTextField txtApeAlu;
-    private javax.swing.JTextField txtFechaNac;
     private javax.swing.JTextField txtNomAlu;
     private javax.swing.JTextField txtRutAlu;
     // End of variables declaration//GEN-END:variables
