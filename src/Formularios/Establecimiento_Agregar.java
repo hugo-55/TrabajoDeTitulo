@@ -26,20 +26,25 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
     
     public Establecimiento_Agregar() {
         initComponents();
-        llenarTabla();
+        llenarTabla("");
     }
-    public void llenarTabla(){
+    public void llenarTabla(String sql){
        DefaultTableModel modelo = (DefaultTableModel) tbl_establecimiento.getModel();
         modelo.setRowCount(0);
        tbl_establecimiento.setModel(modelo);
        try{
-            String cons = "SELECT * FROM establecimiento, usuario WHERE establecimiento.id_usuario = usuario.id_usuario";
-
+            String cons = "";
+            if(sql.equals("")){
+                cons = "SELECT * FROM establecimiento, usuario WHERE establecimiento.id_usuario = usuario.id_usuario";
+            }else{
+                cons = sql;
+            }
+            
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(cons);
             while(rs.next()){
                 modelo.addRow( new Object[]{
-                    rs.getString("id_establecimiento"), rs.getString("nombre"), rs.getString("tipo_educacion"), rs.getString("nombre_usuario")
+                    rs.getString("id_establecimiento"), rs.getString("nombre"), rs.getString("tipo_educacion"), rs.getString("nombre_usuario"), rs.getString("rut_admin")
                 });
             }
 
@@ -83,6 +88,7 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txt_busqueda = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
+        btn_buscar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,6 +125,11 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
         cmb_tipo_educacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Basica", "Media", "Ambas" }));
 
         btn_modificar.setText("Modificar");
+        btn_modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_modificarActionPerformed(evt);
+            }
+        });
 
         btn_eliminar.setText("Eliminar");
         btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -235,7 +246,7 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Codigo", "Nombre", "Tipo Educacion", "Administrador"
+                "Codigo", "Nombre", "Tipo Educacion", "Administrador", "Rut Admin"
             }
         ));
         tbl_establecimiento.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -256,6 +267,13 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
 
         jLabel9.setText("ESTABLECIMIENTOS");
 
+        btn_buscar.setText("Buscar");
+        btn_buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_buscarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -273,11 +291,13 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txt_busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txt_busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btn_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(207, 207, 207)
                                 .addComponent(jLabel9)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(28, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,11 +305,12 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel9)
-                .addGap(65, 65, 65)
+                .addGap(64, 64, 64)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(txt_busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
+                    .addComponent(txt_busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_buscar))
+                .addGap(39, 39, 39)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -314,35 +335,101 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
     private void tbl_establecimientoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_establecimientoMouseClicked
-        // TODO add your handling code here:
-       if(tbl_establecimiento.getSelectedRow()>=0){
-          try{
-          DefaultTableModel tm = (DefaultTableModel)tbl_establecimiento.getModel();
-          String codigo = String.valueOf(tm.getValueAt(tbl_establecimiento.getSelectedRow(),0));
-          String nombre = String.valueOf(tm.getValueAt(tbl_establecimiento.getSelectedRow(),1));
-          String tipo_educacion = String.valueOf(tm.getValueAt(tbl_establecimiento.getSelectedRow(),2));
-          String admin = String.valueOf(tm.getValueAt(tbl_establecimiento.getSelectedRow(),3));
+        if(tbl_establecimiento.getSelectedRow()>=0){
+            try{
+                DefaultTableModel tm = (DefaultTableModel)tbl_establecimiento.getModel();
+                String codigo = String.valueOf(tm.getValueAt(tbl_establecimiento.getSelectedRow(),0));
+                String nombre = String.valueOf(tm.getValueAt(tbl_establecimiento.getSelectedRow(),1));
+                String tipo_educacion = String.valueOf(tm.getValueAt(tbl_establecimiento.getSelectedRow(),2));
+                String admin = String.valueOf(tm.getValueAt(tbl_establecimiento.getSelectedRow(),3));
+                String rut_admin = String.valueOf(tm.getValueAt(tbl_establecimiento.getSelectedRow(), 4));
+                txt_codigo_establecimiento.setText(codigo);
+                txt_nombre.setText(nombre);
+                txt_nom_admin.setText(admin);
+                cmb_tipo_educacion.setSelectedItem(tipo_educacion);
+                txt_rut.setText(rut_admin);
           
-          txt_codigo_establecimiento.setText(codigo);
-          txt_nombre.setText(nombre);
-          txt_nom_admin.setText(admin);
-          cmb_tipo_educacion.setSelectedItem(tipo_educacion);
-          
-          
-          }catch(Exception e){
-          JOptionPane.showMessageDialog(this,"NO CONTIENE UN  ESTABLECIMIENTO ");
-          }
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(this,"NO CONTIENE UN  ESTABLECIMIENTO ");
+            }
          
-       }else{
-        JOptionPane.showMessageDialog(this,"DEBE SELECCIONAR UN ESTABLECIMIENTO","SISTEMA",JOptionPane.WARNING_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(this,"DEBE SELECCIONAR UN ESTABLECIMIENTO","SISTEMA",JOptionPane.WARNING_MESSAGE);
         }
         
     }//GEN-LAST:event_tbl_establecimientoMouseClicked
+
+    private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
+        
+        if(txt_codigo_establecimiento.getText().equals("") ||
+        txt_nombre.getText().equals("") ||
+        txt_nom_admin.getText().equals("") ||
+        String.valueOf(txt_password.getPassword()).equals("") ||
+        txt_rut.getText().equals("")){
+        JOptionPane.showMessageDialog(null, "Los campos no deben estar Vacios", "Campos Vacios", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+        
+    String id_establecimiento = txt_codigo_establecimiento.getText().trim();
+    String rut_admin = txt_rut.getText().trim();
+    
+    String sql = "UPDATE establecimiento SET nombre = '"+txt_nombre.getText().trim()+"', tipo_educacion = '"+cmb_tipo_educacion.getItemAt(cmb_tipo_educacion.getSelectedIndex())+"' WHERE id_establecimiento = '"+id_establecimiento+"'";
+    String sql2 = "UPDATE usuario SET nombre_usuario = '"+txt_nom_admin.getText().trim()+"', tipo_usuario = '"+cmb_tipo_admin.getItemAt(cmb_tipo_admin.getSelectedIndex())+"', clave = '"+String.valueOf(txt_password.getPassword())+"' WHERE rut_admin = '"+rut_admin+"'";
+    try{
+        Statement stm = conn.createStatement();
+        Statement stm2 = conn.createStatement();
+        
+        stm.executeUpdate(sql);
+        stm.executeUpdate(sql2);
+        
+        JOptionPane.showMessageDialog(null, "Modificacion Exitosa", "Modificado", JOptionPane.INFORMATION_MESSAGE);
+        
+        
+    }catch(SQLException ex){
+        JOptionPane.showMessageDialog(null, "Error al Modificar "+ex.getMessage(), "Error de modificacion", JOptionPane.ERROR_MESSAGE);
+    } 
+    }//GEN-LAST:event_btn_modificarActionPerformed
+
+    private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
+        String busqueda = txt_busqueda.getText().trim();
+        
+        String sql = "SELECT * FROM establecimiento, usuario WHERE establecimiento.id_usuario = usuario.id_usuario AND establecimiento.nombre LIKE '%"+busqueda+"%'";
+        
+        llenarTabla(sql);
+        
+    }//GEN-LAST:event_btn_buscarActionPerformed
 
     /**
      * @param args the command line arguments
      */
 public void insertarDatos(){
+    
+    String rut_admin = txt_rut.getText().trim();
+    String sql = "Select count(rut_admin) as cantidad from usuario where rut_admin = '"+rut_admin+"'";
+    try{
+        Statement stm = conn.createStatement();
+        ResultSet rs = stm.executeQuery(sql);
+        if (rs.next()){
+            if(rs.getInt("cantidad") > 0){
+                JOptionPane.showMessageDialog(null, "Ya existe un usuario con este rut.", "Usuario Existente", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+        }
+    }catch(SQLException ex){
+        JOptionPane.showMessageDialog(null, "Hubo un Error en la Peticion", "Error de Consulta", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    if(txt_codigo_establecimiento.getText().equals("") ||
+       txt_nombre.getText().equals("") ||
+       txt_nom_admin.getText().equals("") ||
+       String.valueOf(txt_password.getPassword()).equals("") ||
+       txt_rut.getText().equals("")){
+        JOptionPane.showMessageDialog(null, "Los campos no deben estar Vacios", "Campos Vacios", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    
     try {
         String SQL= "insert into establecimiento(nombre,tipo_educacion,id_establecimiento,id_usuario) values (?,?,?,?) ";
         PreparedStatement pst =  conn.prepareStatement(SQL);
@@ -371,7 +458,7 @@ public void insertarDatos(){
             pst.setInt(4 , id_usuario);
             pst.execute();
          } 
-        llenarTabla();
+        llenarTabla("");
         JOptionPane.showMessageDialog(null,"Registro exitoso");
         
     }catch(Exception e){
@@ -381,29 +468,35 @@ public void insertarDatos(){
 }
 public void eliminarDatos(){
     if(tbl_establecimiento.getSelectedRow() == -1){
-            JOptionPane.showMessageDialog(null, "No has seleccionado una fila", "Seleccione una fila", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+        JOptionPane.showMessageDialog(null, "No has seleccionado una fila", "Seleccione una fila", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
     DefaultTableModel mdl = (DefaultTableModel) tbl_establecimiento.getModel();
     String codigo = String.valueOf(mdl.getValueAt(tbl_establecimiento.getSelectedRow(), 0));
+    String rut_admin = String.valueOf(mdl.getValueAt(tbl_establecimiento.getSelectedRow(), 4));
     int opcion = JOptionPane.showConfirmDialog(null, "¿Estas Seguro de Eliminar este esblecimiento ?", "Eliminacion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
    
     switch(opcion){
-            case 0: {
-                String cons = "DELETE FROM establecimiento WHERE id_establecimiento =' "+codigo+ " ' ";
-                try {
-                    Statement stm = conn.createStatement();
-                    stm.executeUpdate(cons);
-                    JOptionPane.showMessageDialog(null, "Se ha eliminado Correctamente","Eliminacion Concretada", JOptionPane.INFORMATION_MESSAGE);
-                    llenarTabla();
-                } catch (SQLException e) {                
-                    JOptionPane.showMessageDialog(null, "No se Pudo Eliminar", "Eliminacion Fallida", JOptionPane.ERROR_MESSAGE);
-                }
-                break;
+        case 0: 
+            String cons = "DELETE FROM establecimiento WHERE id_establecimiento ='"+codigo+ "'";
+            String cons1 = "DELETE FROM usuario WHERE rut_admin = '"+rut_admin+"'";
+            try {
+                Statement stm = conn.createStatement();
+                Statement stm1 = conn.createStatement();
+                stm.executeUpdate(cons);
+                stm.executeUpdate(cons1);
+                JOptionPane.showMessageDialog(null, "Se ha eliminado Correctamente","Eliminacion Concretada", JOptionPane.INFORMATION_MESSAGE);
+                llenarTabla("");
+            } catch (SQLException e) {                
+                JOptionPane.showMessageDialog(null, "No se Pudo Eliminar", "Eliminacion Fallida", JOptionPane.ERROR_MESSAGE);
             }
-            case 2: JOptionPane.showMessageDialog(null, "Eliminacion Cancelada", "Eliminacion Cancelada",JOptionPane.INFORMATION_MESSAGE);
             break;
-        }
+        case 2: 
+            JOptionPane.showMessageDialog(null, "Eliminacion Cancelada", "Eliminacion Cancelada",JOptionPane.INFORMATION_MESSAGE);
+            break;
+        default:
+            System.out.println("Opcion no valida");
+    }
 }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -440,6 +533,7 @@ public void eliminarDatos(){
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_agregar;
     private javax.swing.JButton btn_atras;
+    private javax.swing.JButton btn_buscar;
     private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_modificar;
     private javax.swing.JComboBox<String> cmb_tipo_admin;
