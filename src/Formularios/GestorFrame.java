@@ -4,10 +4,17 @@ package Formularios;
 
 public class GestorFrame extends javax.swing.JFrame {
 
+    private String rut;
+    
     public GestorFrame() {
         initComponents();
     }
 
+    public GestorFrame(String rut){
+        this.rut = rut;
+        initComponents();
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -122,7 +129,8 @@ public class GestorFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
+        new Cursos_Mantenedor(rut).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

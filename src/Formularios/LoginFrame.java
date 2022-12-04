@@ -4,12 +4,15 @@ import com.mysql.jdbc.Connection;
 import java.sql.SQLException;
 import java.sql.*;
 import javax.swing.JOptionPane;
+import Formularios.Validacion_RUT;
+
 
 
 public class LoginFrame extends javax.swing.JFrame {
     Conexion conex = new Conexion();
     Connection conn = (Connection) conex.realizarConexion();
    
+    Validacion_RUT validacion;
   
     public LoginFrame() {
         initComponents();
@@ -21,12 +24,20 @@ public class LoginFrame extends javax.swing.JFrame {
         String User  = txt_usuario.getText();
         String Pass = String.valueOf(txt_pass.getPassword());
         
+        validacion = new Validacion_RUT(User);
+        boolean valid = validacion.Validacion_Concreta();
+        
+        if(!valid){
+            JOptionPane.showMessageDialog(null, "El rut no es Correcto","Rut Incorrecto",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         if (User.equals("") || Pass.equals("")){
             JOptionPane.showMessageDialog(this,"uno o mas campos estan vacios , favor de rellenarlos " );
         } else{
             try{
                 con1 =  (Connection) conex.realizarConexion();
-                pst = conn.prepareStatement("select nombre_usuario , clave, tipo_usuario  from usuario where nombre_usuario ='" + User +
+                pst = conn.prepareStatement("SELECT * FROM usuario WHERE rut_admin ='" + User +
                         "' and clave ='"+ Pass +"'");
                 ResultSet rs = pst.executeQuery();
                 
@@ -103,6 +114,11 @@ public class LoginFrame extends javax.swing.JFrame {
         txt_pass.setBounds(200, 210, 170, 20);
 
         txt_usuario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 204, 255)));
+        txt_usuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_usuarioKeyTyped(evt);
+            }
+        });
         jPanel1.add(txt_usuario);
         txt_usuario.setBounds(200, 150, 170, 20);
 
@@ -162,6 +178,21 @@ public class LoginFrame extends javax.swing.JFrame {
             ingresar();
         }*/
     }//GEN-LAST:event_btn_ingresarMouseClicked
+
+    private void txt_usuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyTyped
+        int key = evt.getKeyChar();
+
+        boolean numeros = (key >= 48 && key <= 57) || key == 45;
+
+        if (!numeros)
+        {
+            evt.consume();
+        }
+
+        if (txt_usuario.getText().trim().length() == 10) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_usuarioKeyTyped
 
     
     
