@@ -308,9 +308,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_codigo_establecimiento">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_codigo_establecimientoActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel10">
           <Properties>
