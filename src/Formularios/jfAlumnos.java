@@ -9,6 +9,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -91,6 +94,7 @@ public class jfAlumnos extends javax.swing.JFrame {
 
         jFileChooser1 = new javax.swing.JFileChooser();
         jProgressBar1 = new javax.swing.JProgressBar();
+        btnGroupSexo = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         cmdModificarAlu = new javax.swing.JButton();
@@ -99,6 +103,17 @@ public class jfAlumnos extends javax.swing.JFrame {
         jTableAlu = new javax.swing.JTable();
         cmdModificarAlu1 = new javax.swing.JButton();
         cmdEliminarAlu1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        txtRutAlu = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtNomAlu = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtApeAlu = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jLabel6 = new javax.swing.JLabel();
+        rbMasc = new javax.swing.JRadioButton();
+        rbFem = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,6 +132,11 @@ public class jfAlumnos extends javax.swing.JFrame {
 
         cmdEliminarAlu.setText("Eliminar");
 
+        jTableAlu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableAluMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableAlu);
 
         cmdModificarAlu1.setText("Agregar");
@@ -133,6 +153,36 @@ public class jfAlumnos extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("Rut:");
+
+        txtRutAlu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtRutAluActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Nombre:");
+
+        jLabel4.setText("Apellido:");
+
+        txtApeAlu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtApeAluActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Fecha Nacimiento:");
+
+        jDateChooser1.setDateFormatString("dd-MM-yyyy");
+
+        jLabel6.setText("Sexo:");
+
+        btnGroupSexo.add(rbMasc);
+        rbMasc.setText("Masculino");
+
+        btnGroupSexo.add(rbFem);
+        rbFem.setText("Femenino");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -140,24 +190,41 @@ public class jfAlumnos extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(74, 74, 74)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cmdModificarAlu1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cmdEliminarAlu, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cmdEliminarAlu1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(27, 27, 27)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel4)
+                                .addGap(72, 72, 72)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtApeAlu)
+                                    .addComponent(txtNomAlu)
+                                    .addComponent(txtRutAlu)
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(cmdModificarAlu)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addGap(75, 75, 75)
+                                        .addComponent(rbMasc)))
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(cmdModificarAlu1)
-                                        .addComponent(cmdModificarAlu, javax.swing.GroupLayout.Alignment.TRAILING))
-                                    .addComponent(cmdEliminarAlu, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(cmdEliminarAlu1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                                .addComponent(rbFem))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(74, 74, 74)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,24 +232,45 @@ public class jfAlumnos extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cmdModificarAlu1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtRutAlu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtNomAlu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtApeAlu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cmdModificarAlu)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cmdEliminarAlu))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(cmdEliminarAlu1)
-                .addGap(69, 69, 69))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(rbMasc)
+                                .addComponent(rbFem)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cmdModificarAlu)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmdEliminarAlu1)
+                    .addComponent(cmdEliminarAlu)
+                    .addComponent(cmdModificarAlu1))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,7 +283,7 @@ public class jfAlumnos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdModificarAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdModificarAluActionPerformed
-        // TODO add your handling code here:
+        //
     }//GEN-LAST:event_cmdModificarAluActionPerformed
 
     private void cmdModificarAlu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdModificarAlu1ActionPerformed
@@ -206,6 +294,54 @@ public class jfAlumnos extends javax.swing.JFrame {
     private void cmdEliminarAlu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEliminarAlu1ActionPerformed
         dispose();
     }//GEN-LAST:event_cmdEliminarAlu1ActionPerformed
+
+    private void txtRutAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRutAluActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRutAluActionPerformed
+
+    private void txtApeAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApeAluActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtApeAluActionPerformed
+
+    private void jTableAluMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableAluMouseClicked
+        SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+        
+        //Seleccionado de datos para pasarlos a Modificar
+        if (jTableAlu.getSelectedRow()>=0){
+            try{
+                DefaultTableModel tm = (DefaultTableModel)jTableAlu.getModel();
+                String rut = String.valueOf(tm.getValueAt(jTableAlu.getSelectedRow(),0));
+                String nombre = String.valueOf(tm.getValueAt(jTableAlu.getSelectedRow(),1));
+                String apellido = String.valueOf(tm.getValueAt(jTableAlu.getSelectedRow(),2));
+                String fecha = String.valueOf(tm.getValueAt(jTableAlu.getSelectedRow(),3));
+                String sexo = String.valueOf(tm.getValueAt(jTableAlu.getSelectedRow(),4));
+                txtRutAlu.setText(rut);
+                txtNomAlu.setText(nombre);
+                txtApeAlu.setText(apellido);
+                //Date fechaSeleccionada = format1.parse(fecha);
+                //jDateChooser1.setSelectedDate(fechaSeleccionada);
+                
+                Date fechaSeleccionada;
+                try {
+                    fechaSeleccionada = format1.parse(fecha);
+                } catch (ParseException e) {
+                    fechaSeleccionada = new Date();
+                    JOptionPane.showMessageDialog(this, "La fecha seleccionada no es válida. La fecha se ha establecido en la fecha actual.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                if (sexo.equals("M")) {
+                    rbMasc.setSelected(true);
+                } else {
+                    rbFem.setSelected(true);
+                }       
+                //btnGroupSexo.setText(sexo);
+                
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(this,"");
+            }
+        }else{
+            JOptionPane.showMessageDialog(this,"DEBE SELECCIONAR UN ESTABLECIMIENTO","SISTEMA",JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jTableAluMouseClicked
 
     /**
      * @param args the command line arguments
@@ -243,15 +379,27 @@ public class jfAlumnos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup btnGroupSexo;
     private javax.swing.JButton cmdEliminarAlu;
     private javax.swing.JButton cmdEliminarAlu1;
     private javax.swing.JButton cmdModificarAlu;
     private javax.swing.JButton cmdModificarAlu1;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableAlu;
+    private javax.swing.JRadioButton rbFem;
+    private javax.swing.JRadioButton rbMasc;
+    private javax.swing.JTextField txtApeAlu;
+    private javax.swing.JTextField txtNomAlu;
+    private javax.swing.JTextField txtRutAlu;
     // End of variables declaration//GEN-END:variables
 }
