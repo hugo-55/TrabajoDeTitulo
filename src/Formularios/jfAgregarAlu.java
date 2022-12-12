@@ -33,7 +33,7 @@ public class jfAgregarAlu extends javax.swing.JFrame {
         String pass="";
         try{
             conex=DriverManager.getConnection(url,usuario,pass);
-            JOptionPane.showMessageDialog(null,"conectado","coneccion",1);
+            //JOptionPane.showMessageDialog(null,"conectado","coneccion",1);
         }catch(Exception ex){
             System.out.println("ERROR de Conexion");
         }
@@ -48,6 +48,7 @@ public class jfAgregarAlu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnGroupSexo = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -101,8 +102,10 @@ public class jfAgregarAlu extends javax.swing.JFrame {
             }
         });
 
+        btnGroupSexo.add(rbMasc);
         rbMasc.setText("Masculino");
 
+        btnGroupSexo.add(rbFem);
         rbFem.setText("Femenino");
 
         jLabel4.setText("Apellido:");
@@ -336,6 +339,7 @@ public class jfAgregarAlu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup btnGroupSexo;
     private javax.swing.JButton cmdAtras;
     private javax.swing.JButton cmdMatricular;
     private com.toedter.calendar.JDateChooser jDateChooser1;
