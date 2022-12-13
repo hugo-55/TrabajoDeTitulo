@@ -44,7 +44,7 @@ public class LoginFrame extends javax.swing.JFrame {
                 if(rs.next()){
                     if(rs.getString("tipo_usuario").equals("UTP")){
                         this.dispose();
-                        new GestorFrame().setVisible(true);
+                        new GestorFrame(User).setVisible(true);
                     }else if(rs.getString("tipo_usuario").equals("ADMIN")){
                         this.dispose();
                         new AdminFrame().setVisible(true);
