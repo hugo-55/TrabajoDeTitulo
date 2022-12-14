@@ -119,7 +119,7 @@ public class JFrameMatriculas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdMatricularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMatricularActionPerformed
-        jfAgregarAlu fra = new jfAgregarAlu();
+        jfMatricularAlu fra = new jfMatricularAlu();
         fra.setVisible(true);
     }//GEN-LAST:event_cmdMatricularActionPerformed
 

@@ -236,7 +236,7 @@ public class jfAgregarAlu extends javax.swing.JFrame {
         //java.util.Date utilPackageDate = new java.util.Date();
         //java.sql.Date sqlPackageDate = new java.sql.Date(jDateChooser1.getDate());
         //Date fecha = jDateChooser1.getDate();
-        SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
         String fecha =  format1.format(jDateChooser1.getDate());
         //Date fecha_nacimiento = format1.parse(fecha);
         //Numeros para Matricula
