@@ -48,7 +48,7 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         jTableAlu = new javax.swing.JTable();
         cmdAtras = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        cmbCurso = new javax.swing.JComboBox<>();
+        cbCurso = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jYearChooser1 = new com.toedter.calendar.JYearChooser();
@@ -56,6 +56,8 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         jTableMatriculados = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         cmdMatricular = new javax.swing.JButton();
+        cmdAgregarAlu = new javax.swing.JButton();
+        cmdManejoAlu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,10 +102,10 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Matricular Alumnos Año:");
 
-        cmbCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbCurso.addActionListener(new java.awt.event.ActionListener() {
+        cbCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbCurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbCursoActionPerformed(evt);
+                cbCursoActionPerformed(evt);
             }
         });
 
@@ -128,6 +130,25 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         jLabel4.setText("Alumnos:");
 
         cmdMatricular.setText("Matricular");
+        cmdMatricular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdMatricularActionPerformed(evt);
+            }
+        });
+
+        cmdAgregarAlu.setText("Agregar Alumno");
+        cmdAgregarAlu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdAgregarAluActionPerformed(evt);
+            }
+        });
+
+        cmdManejoAlu.setText("Manejo Alumnos");
+        cmdManejoAlu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdManejoAluActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -144,32 +165,37 @@ public class jfMatricularAlu extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(cmdManejoAlu)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cmdAgregarAlu))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jLabel2)
                                         .addGap(18, 18, 18)
-                                        .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18))
+                                        .addComponent(cbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(cmdMatricular)
-                                        .addGap(50, 50, 50)))
+                                        .addGap(37, 37, 37)))
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cmdAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cmdAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(43, 43, 43))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,18 +211,21 @@ public class jfMatricularAlu extends javax.swing.JFrame {
                     .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBusqueda))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(42, 42, 42)
                         .addComponent(cmdMatricular)))
-                .addGap(18, 18, 18)
-                .addComponent(cmdAtras)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmdAtras)
+                    .addComponent(cmdAgregarAlu)
+                    .addComponent(cmdManejoAlu))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -207,9 +236,7 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -265,7 +292,7 @@ public class jfMatricularAlu extends javax.swing.JFrame {
             ResultSet rs = stm.executeQuery(sql2);
             while (rs.next()) {
                 modelo.addElement(rs.getString("nombre"));
-                cmbCurso.setModel(modelo);
+                cbCurso.setModel(modelo);
             }
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error al Cargar los Cursos "+ex, "Error de Carga", JOptionPane.ERROR_MESSAGE);
@@ -273,6 +300,7 @@ public class jfMatricularAlu extends javax.swing.JFrame {
     }
     
     private void llenarTablaMatriculas(String sql){
+        
         DefaultTableModel model = new DefaultTableModel();
         
         jTableMatriculados.setModel(model);
@@ -305,6 +333,7 @@ public class jfMatricularAlu extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error al Cargar la Lista "+ex, "Error de Carga", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
     private void jTableAluMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableAluMouseClicked
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy/MM/dd");
 
@@ -326,14 +355,91 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_cmdAtrasActionPerformed
 
-    private void cmbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCursoActionPerformed
+    private void cbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCursoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cmbCursoActionPerformed
+    }//GEN-LAST:event_cbCursoActionPerformed
 
     private void jTableMatriculadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMatriculadosMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTableMatriculadosMouseClicked
 
+    private void cmdAgregarAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAgregarAluActionPerformed
+        jfAgregarAlu fra = new jfAgregarAlu();
+        fra.setVisible(true);
+    }//GEN-LAST:event_cmdAgregarAluActionPerformed
+
+    private void cmdManejoAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdManejoAluActionPerformed
+        jfAlumnos fra = new jfAlumnos();
+        fra.setVisible(true);
+    }//GEN-LAST:event_cmdManejoAluActionPerformed
+
+    private void cmdMatricularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMatricularActionPerformed
+
+        if (jTableAlu.getSelectedRow()>=0){
+            try{
+                DefaultTableModel tm = (DefaultTableModel)jTableAlu.getModel();
+                String rut = String.valueOf(tm.getValueAt(jTableAlu.getSelectedRow(),0));
+                String nombre = String.valueOf(tm.getValueAt(jTableAlu.getSelectedRow(),1));
+                String apellido = String.valueOf(tm.getValueAt(jTableAlu.getSelectedRow(),2));
+                //Seleccion de curso del comboBox
+                String curso = (String)cbCurso.getSelectedItem();
+                Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));
+                Integer establecimientoDB = Integer.valueOf(obtenerIDEstablecimiento(curso));
+                //-------------------------------
+                //Obtencion del año
+                Integer anno = (Integer)jYearChooser1.getYear();
+                //-----------------
+                Integer vtc = 0;
+                String inser = "INSERT INTO matriculas(cod_curso,id_establecimiento,rut_estudiante,anno,vtc) VALUES ('"+cursoDB+"','"+establecimientoDB+"','"+rut+"','"+anno+"','"+vtc+"')";
+                try{
+                    Statement stm = conn.createStatement();
+                    ResultSet rs = stm.executeQuery(inser);
+                    JOptionPane.showMessageDialog(null, "Datos Ingresados","Ingreso",1);
+                }catch(SQLException ei){
+                    JOptionPane.showMessageDialog(null, "Error en ingreso"+ei,"Insert",3);
+                }
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(this,"ERROR DESPUES DEL INSERT");
+            }
+        }else{
+            JOptionPane.showMessageDialog(this,"DEBE SELECCIONAR UN ALUMNO PARA MATRICULAR","SISTEMA",JOptionPane.WARNING_MESSAGE);
+        }
+        llenarTablaMatriculas("");
+    }//GEN-LAST:event_cmdMatricularActionPerformed
+    public String obtenerCodigoCurso(String curso){
+        String codcurso = "";
+        try{
+            String sql = "SELECT cod_curso FROM cursos WHERE cursos.nombre = curso";
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            
+            if (rs.next()){
+                codcurso = rs.getString("cod_curso");
+            }else{
+                codcurso = "";
+            }
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(this,"ERROR AL SELECCIONAR EL CURSO","SISTEMA",JOptionPane.WARNING_MESSAGE);
+        }
+        return codcurso;
+    }
+    public String obtenerIDEstablecimiento(String curso){
+        String idesta="";
+        try{
+            String sql = "SELECT id_establecimiento FROM cursos WHERE cursos.nombre = curso";
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            
+            if (rs.next()){
+                idesta= rs.getString("id_establecimiento");
+            }else{
+                idesta = "";
+            }
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(this,"ERROR AL SELECCIONAR EL ESTABLECIMIENTO","SISTEMA",JOptionPane.WARNING_MESSAGE);
+        }
+        return idesta;
+    }
     /**
      * @param args the command line arguments
      */
@@ -371,8 +477,10 @@ public class jfMatricularAlu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBusqueda;
-    private javax.swing.JComboBox<String> cmbCurso;
+    private javax.swing.JComboBox<String> cbCurso;
+    private javax.swing.JButton cmdAgregarAlu;
     private javax.swing.JButton cmdAtras;
+    private javax.swing.JButton cmdManejoAlu;
     private javax.swing.JButton cmdMatricular;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

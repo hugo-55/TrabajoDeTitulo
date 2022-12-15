@@ -57,7 +57,7 @@ public class jfAgregarAlu extends javax.swing.JFrame {
         txtNomAlu = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        cmdMatricular = new javax.swing.JButton();
+        cmdAgregarAlu = new javax.swing.JButton();
         cmdAtras = new javax.swing.JButton();
         rbMasc = new javax.swing.JRadioButton();
         rbFem = new javax.swing.JRadioButton();
@@ -88,10 +88,10 @@ public class jfAgregarAlu extends javax.swing.JFrame {
 
         jLabel6.setText("Sexo:");
 
-        cmdMatricular.setText("Agregar");
-        cmdMatricular.addActionListener(new java.awt.event.ActionListener() {
+        cmdAgregarAlu.setText("Agregar");
+        cmdAgregarAlu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdMatricularActionPerformed(evt);
+                cmdAgregarAluActionPerformed(evt);
             }
         });
 
@@ -144,7 +144,7 @@ public class jfAgregarAlu extends javax.swing.JFrame {
                         .addGap(75, 75, 75)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(cmdMatricular)
+                                .addComponent(cmdAgregarAlu)
                                 .addGap(28, 28, 28)
                                 .addComponent(cmdAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -183,7 +183,7 @@ public class jfAgregarAlu extends javax.swing.JFrame {
                             .addComponent(rbFem))
                         .addGap(43, 43, 43)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmdMatricular)
+                            .addComponent(cmdAgregarAlu)
                             .addComponent(cmdAtras))))
                 .addContainerGap(58, Short.MAX_VALUE))
         );
@@ -212,7 +212,7 @@ public class jfAgregarAlu extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_cmdAtrasActionPerformed
 
-    private void cmdMatricularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMatricularActionPerformed
+    private void cmdAgregarAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAgregarAluActionPerformed
 
         String rut=txtRutAlu.getText();
         Validacion_RUT Validacion;
@@ -220,7 +220,7 @@ public class jfAgregarAlu extends javax.swing.JFrame {
 
         if(Validacion.Validacion_Concreta() == true){
 
-            JOptionPane.showMessageDialog(null, "El rut es valido");
+            //JOptionPane.showMessageDialog(null, "El rut es valido");
 
         }else{
 
@@ -284,7 +284,7 @@ public class jfAgregarAlu extends javax.swing.JFrame {
         }catch(SQLException ei){
             JOptionPane.showMessageDialog(null, "Error en ingreso"+ei,"Insert",3);
         }*/
-    }//GEN-LAST:event_cmdMatricularActionPerformed
+    }//GEN-LAST:event_cmdAgregarAluActionPerformed
 
     private void txtRutAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRutAluActionPerformed
         // TODO add your handling code here:
@@ -340,8 +340,8 @@ public class jfAgregarAlu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btnGroupSexo;
+    private javax.swing.JButton cmdAgregarAlu;
     private javax.swing.JButton cmdAtras;
-    private javax.swing.JButton cmdMatricular;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

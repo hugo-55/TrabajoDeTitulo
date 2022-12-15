@@ -107,7 +107,7 @@ public class jfAlumnos extends javax.swing.JFrame {
         cmdEliminarAlu = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableAlu = new javax.swing.JTable();
-        cmdModificarAlu1 = new javax.swing.JButton();
+        cmdAgregarAlu = new javax.swing.JButton();
         cmdAtras = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txtRutAlu = new javax.swing.JTextField();
@@ -153,10 +153,10 @@ public class jfAlumnos extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTableAlu);
 
-        cmdModificarAlu1.setText("Agregar");
-        cmdModificarAlu1.addActionListener(new java.awt.event.ActionListener() {
+        cmdAgregarAlu.setText("Agregar");
+        cmdAgregarAlu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdModificarAlu1ActionPerformed(evt);
+                cmdAgregarAluActionPerformed(evt);
             }
         });
 
@@ -220,7 +220,7 @@ public class jfAlumnos extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cmdModificarAlu1)
+                        .addComponent(cmdAgregarAlu)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cmdEliminarAlu, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -301,7 +301,7 @@ public class jfAlumnos extends javax.swing.JFrame {
                     .addComponent(cmdAtras)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cmdEliminarAlu)
-                        .addComponent(cmdModificarAlu1)))
+                        .addComponent(cmdAgregarAlu)))
                 .addGap(32, 32, 32))
         );
 
@@ -359,10 +359,10 @@ public class jfAlumnos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cmdModificarAluActionPerformed
 
-    private void cmdModificarAlu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdModificarAlu1ActionPerformed
+    private void cmdAgregarAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAgregarAluActionPerformed
         jfAgregarAlu fra = new jfAgregarAlu();
         fra.setVisible(true);
-    }//GEN-LAST:event_cmdModificarAlu1ActionPerformed
+    }//GEN-LAST:event_cmdAgregarAluActionPerformed
 
     private void cmdAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAtrasActionPerformed
         dispose();
@@ -498,10 +498,10 @@ public class jfAlumnos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBusqueda;
     private javax.swing.ButtonGroup btnGroupSexo;
+    private javax.swing.JButton cmdAgregarAlu;
     private javax.swing.JButton cmdAtras;
     private javax.swing.JButton cmdEliminarAlu;
     private javax.swing.JButton cmdModificarAlu;
-    private javax.swing.JButton cmdModificarAlu1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;

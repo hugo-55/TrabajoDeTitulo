@@ -61,7 +61,7 @@
                   <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="cmdModificarAlu1" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmdAgregarAlu" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="cmdEliminarAlu" min="-2" pref="75" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
@@ -163,7 +163,7 @@
                       <Component id="cmdAtras" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="cmdEliminarAlu" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cmdModificarAlu1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmdAgregarAlu" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
@@ -218,12 +218,12 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JButton" name="cmdModificarAlu1">
+        <Component class="javax.swing.JButton" name="cmdAgregarAlu">
           <Properties>
             <Property name="text" type="java.lang.String" value="Agregar"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdModificarAlu1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdAgregarAluActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="cmdAtras">
