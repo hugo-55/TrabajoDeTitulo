@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 import Formularios.Validacion_RUT;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-
 /**
  *
  * @author Hugo
@@ -217,7 +216,6 @@ public class jfAgregarAlu extends javax.swing.JFrame {
         String rut=txtRutAlu.getText();
         Validacion_RUT Validacion;
         Validacion = new Validacion_RUT(rut);
-
         
 
         //Textos para Alumnos.

@@ -4,6 +4,7 @@
  */
 package Formularios;
 
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -269,6 +270,9 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         String sql = "SELECT * FROM estudiante WHERE estudiante.nombres LIKE '%"+busqueda+"%'";
 
         llenarTablaAlumnos(sql);
+        
+        /*String cons = "SELECT * FROM matriculas, estudiante, cursos WHERE matriculas.rut_estudiante = estudiante.rut_estudiante AND matriculas.cod_curso = cursos.cod_curso AND estudiante.nombres LIKE %'"+busqueda+"'";
+        llenarTablaMatriculas(sql);*/
     }//GEN-LAST:event_btnBusquedaActionPerformed
     public void llenarTablaAlumnos(String sql){
         DefaultTableModel model = new DefaultTableModel();
@@ -403,21 +407,77 @@ public class jfMatricularAlu extends javax.swing.JFrame {
                 Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));
                 Integer establecimientoDB = Integer.valueOf(obtenerIDEstablecimiento(curso));
                 //-------------------------------
-                //Obtencion del año
-                Integer anno = (Integer)jYearChooser1.getYear();
-                //-----------------
+                //Obtencion de VTC y Estado
                 Integer vtc = 0;
                 //Definicion de estado
                 String estado = "Matriculado";
+                //Obtencion del año
+                Integer anno = (Integer)jYearChooser1.getYear();
+                
+                //Insert de Matricula
                 String inser = "INSERT INTO matriculas(cod_curso,id_establecimiento,rut_estudiante,anno,vtc,estado) VALUES ('"+cursoDB+"','"+establecimientoDB+"','"+rut+"','"+anno+"','"+vtc+"','"+estado+"')";
                 try{
-                    Statement stm = conn.createStatement();
-                    stm.executeUpdate(inser);
-                    JOptionPane.showMessageDialog(null, "Datos Ingresados","Ingreso",1);
+                    Statement stm1 = conn.createStatement();
+                    stm1.executeUpdate(inser);
+                    JOptionPane.showMessageDialog(null, "Alumno matriculado :D","Ingreso",1);
                 }catch(SQLException ei){
-                    JOptionPane.showMessageDialog(null, "Error en ingreso"+ei,"Insert",3);
+                    JOptionPane.showMessageDialog(null, "Error al matricular al alumno :C"+ei,"Insert",3);
                 }
-            }catch(Exception e){
+                //Verificacion no terminada
+                //String verif = "SELECT * FROM matriculas WHERE matriculas.cod_curso = '"+cursoDB+"' AND matriculas.id_establecimiento = '"+establecimientoDB+"' AND matriculas.rut_estudiante = '"+rut+"'";
+                /*try{
+                    Statement stm0 = conn.createStatement();
+                    ResultSet res = stm0.executeQuery(verif);
+                    Integer annoDB = res.getInt("anno");
+                    String rutDB = res.getString("rut");
+                    if(res.next()){
+                        //Verificacion de rut duplicado
+                        if(rutDB.equals(rut)){
+                            //Verificacion de año duplicado
+                           if(annoDB == anno){
+                               JOptionPane.showMessageDialog(null, "Ya existe este alumno Matriculado para este año","ERROR MATRICULA",JOptionPane.ERROR_MESSAGE);
+                               return;
+                           }else{
+                                try{
+                                    Statement stm1 = conn.createStatement();
+                                    stm1.executeUpdate(inser);
+                                    JOptionPane.showMessageDialog(null, "Datos Ingresados","Ingreso",1);
+                                }catch(SQLException ei){
+                                    JOptionPane.showMessageDialog(null, "Error en ingreso"+ei,"Insert",3);
+                                }           
+                           }
+                        }else{
+                            try{
+                                Statement stm2 = conn.createStatement();
+                                stm2.executeUpdate(inser);
+                                JOptionPane.showMessageDialog(null, "Datos Ingresados","Ingreso",1);
+                            }catch(SQLException ei){
+                                JOptionPane.showMessageDialog(null, "Error en ingreso"+ei,"Insert",3);
+                            } 
+                        }
+                        
+                    }
+                }catch(SQLException e){
+                    JOptionPane.showMessageDialog(null, "Error al seleccionar datos de Matricula","ERROR MATRICULA",JOptionPane.ERROR_MESSAGE);
+                }*/
+                /*try{
+                    String verif = "SELECT anno FROM matriculas WHERE cod_curso ='"+cursoDB+"' AND id_establecimiento = '"+establecimientoDB+"' AND rut_estudiante ='"+rut+"'";
+                    Statement stm = conn.createStatement();
+                    ResultSet rs = stm.executeQuery(verif);
+                    Integer annoDB = rs.getInt("anno");
+                    //System.out.println("Seleccion hecha");
+                    if(rs.next()){
+                        if(anno == annoDB){
+                        JOptionPane.showMessageDialog(null, "Ya existe un alumnos matriculado para este año en otro curso","Error Matricula",JOptionPane.WARNING_MESSAGE);
+                        return;
+                        }else{
+                            
+                        }
+                    }
+                }catch(SQLException e){
+                    JOptionPane.showMessageDialog(null, "No se Obtuvo el año","ERROR",JOptionPane.WARNING_MESSAGE);
+                }*/
+            }catch(HeadlessException | NumberFormatException e){
                 JOptionPane.showMessageDialog(this,"ERROR DESPUES DEL INSERT");
             }
         }else{
