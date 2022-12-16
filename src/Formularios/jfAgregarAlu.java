@@ -218,15 +218,7 @@ public class jfAgregarAlu extends javax.swing.JFrame {
         Validacion_RUT Validacion;
         Validacion = new Validacion_RUT(rut);
 
-        if(Validacion.Validacion_Concreta() == true){
-
-            //JOptionPane.showMessageDialog(null, "El rut es valido");
-
-        }else{
-
-            JOptionPane.showMessageDialog(null, "El rut es Invalido");
-
-        }
+        
 
         //Textos para Alumnos.
         String nom=txtNomAlu.getText(),ape=txtApeAlu.getText(),sexo="",curso="";
@@ -259,13 +251,33 @@ public class jfAgregarAlu extends javax.swing.JFrame {
             System.out.println(Digito + "2da parte");
             //JOptionPane.showMessageDialog(null, "Rut Incorrecto","Incorrecto",1);
         }*/
-        String inser="INSERT INTO estudiante(rut_estudiante,nombres,apellidos,fecha_nacimiento,sexo) VALUES ('"+ rut +"','"+ nom +"','"+ape+"','"+ fecha +"','"+ sexo+"')";
-        try{
-            stm=conex.createStatement();
-            stm.executeUpdate(inser);
-            JOptionPane.showMessageDialog(null, "Datos Ingresados","Ingreso",1);
-        }catch(SQLException ei){
-            JOptionPane.showMessageDialog(null, "Error en ingreso"+ei,"Insert",3);
+        if(Validacion.Validacion_Concreta() == true){
+
+            //JOptionPane.showMessageDialog(null, "El rut es valido");
+            try{
+                String sql = "SELECT rut_estudiante FROM estudiante WHERE rut_estudiante = '"+rut+"'";
+                stm=conex.createStatement();
+                ResultSet rs = stm.executeQuery(sql);
+                if(rs.toString().equals(rut)){
+                    JOptionPane.showMessageDialog(null, "Ya se encuentra registrado este rut", "Agregado Fallido", JOptionPane.ERROR_MESSAGE);
+                }else{
+                    String inser="INSERT INTO estudiante(rut_estudiante,nombres,apellidos,fecha_nacimiento,sexo) VALUES ('"+ rut +"','"+ nom +"','"+ape+"','"+ fecha +"','"+ sexo+"')";
+                    try{
+                        stm=conex.createStatement();
+                        stm.executeUpdate(inser);
+                        JOptionPane.showMessageDialog(null, "Datos Ingresados","Ingreso",1);
+                    }catch(SQLException ei){
+                        JOptionPane.showMessageDialog(null, "Error en ingreso"+ei,"Insert",3);
+                    } 
+                }
+            }catch(SQLException e){
+                JOptionPane.showMessageDialog(null, "Error al compara rut", "Verificacion Fallida", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }else{
+
+            JOptionPane.showMessageDialog(null, "El rut es Invalido");
+
         }
         /*String inser="INSERT INTO estudiante(rut_estudiante,nombres,apellidos,fecha_nacimiento,sexo) VALUES ('"+ rut +"','"+ nom +"','"+ape+"','"+ fecha +"','"+ sexo+"')";
         try{

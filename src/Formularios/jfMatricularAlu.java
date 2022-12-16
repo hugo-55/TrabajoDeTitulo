@@ -58,6 +58,7 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         cmdMatricular = new javax.swing.JButton();
         cmdAgregarAlu = new javax.swing.JButton();
         cmdManejoAlu = new javax.swing.JButton();
+        cmdEliminarAlu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,6 +104,11 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         jLabel1.setText("Matricular Alumnos Año:");
 
         cbCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbCurso.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbCursoMouseClicked(evt);
+            }
+        });
         cbCurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbCursoActionPerformed(evt);
@@ -150,6 +156,13 @@ public class jfMatricularAlu extends javax.swing.JFrame {
             }
         });
 
+        cmdEliminarAlu.setText("Eliminar Matricula");
+        cmdEliminarAlu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdEliminarAluActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -158,43 +171,46 @@ public class jfMatricularAlu extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jYearChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(cmdManejoAlu)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jYearChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cmdAgregarAlu))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3)
+                                .addGap(256, 256, 256)
+                                .addComponent(cmdAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(cmdManejoAlu)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cmdAgregarAlu))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel2)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(cbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jLabel2)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(cbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(cmdMatricular)
+                                                .addGap(37, 37, 37)))
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(cmdMatricular)
-                                        .addGap(37, 37, 37)))
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cmdAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(cmdEliminarAlu)))))
                         .addGap(43, 43, 43))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -204,7 +220,8 @@ public class jfMatricularAlu extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
-                    .addComponent(jYearChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jYearChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdAtras))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -222,17 +239,17 @@ public class jfMatricularAlu extends javax.swing.JFrame {
                         .addComponent(cmdMatricular)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmdAtras)
                     .addComponent(cmdAgregarAlu)
-                    .addComponent(cmdManejoAlu))
-                .addContainerGap(40, Short.MAX_VALUE))
+                    .addComponent(cmdManejoAlu)
+                    .addComponent(cmdEliminarAlu))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -390,10 +407,12 @@ public class jfMatricularAlu extends javax.swing.JFrame {
                 Integer anno = (Integer)jYearChooser1.getYear();
                 //-----------------
                 Integer vtc = 0;
-                String inser = "INSERT INTO matriculas(cod_curso,id_establecimiento,rut_estudiante,anno,vtc) VALUES ('"+cursoDB+"','"+establecimientoDB+"','"+rut+"','"+anno+"','"+vtc+"')";
+                //Definicion de estado
+                String estado = "Matriculado";
+                String inser = "INSERT INTO matriculas(cod_curso,id_establecimiento,rut_estudiante,anno,vtc,estado) VALUES ('"+cursoDB+"','"+establecimientoDB+"','"+rut+"','"+anno+"','"+vtc+"','"+estado+"')";
                 try{
                     Statement stm = conn.createStatement();
-                    ResultSet rs = stm.executeQuery(inser);
+                    stm.executeUpdate(inser);
                     JOptionPane.showMessageDialog(null, "Datos Ingresados","Ingreso",1);
                 }catch(SQLException ei){
                     JOptionPane.showMessageDialog(null, "Error en ingreso"+ei,"Insert",3);
@@ -404,12 +423,72 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(this,"DEBE SELECCIONAR UN ALUMNO PARA MATRICULAR","SISTEMA",JOptionPane.WARNING_MESSAGE);
         }
-        llenarTablaMatriculas("");
+        String curso = (String)cbCurso.getSelectedItem();
+        llenarTablaMatriculasFiltrado(curso);
     }//GEN-LAST:event_cmdMatricularActionPerformed
+
+    private void cbCursoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbCursoMouseClicked
+        //System.out.println("Clickeado");
+        String curso = (String)cbCurso.getSelectedItem();
+        llenarTablaMatriculasFiltrado(curso);
+    }//GEN-LAST:event_cbCursoMouseClicked
+
+    private void cmdEliminarAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEliminarAluActionPerformed
+
+        if(jTableMatriculados.getSelectedRow() == -1){
+            JOptionPane.showMessageDialog(null, "No has seleccionado una fila", "Seleccione una fila", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        DefaultTableModel tm = (DefaultTableModel)jTableMatriculados.getModel();
+        //Obtencion de Numero de Matricula
+        String numMatricula = String.valueOf(tm.getValueAt(jTableMatriculados.getSelectedRow(),0));
+        Integer matricula = Integer.parseInt(numMatricula);
+        //--------------------------------
+        //Obtencion de Ruta Alumno
+        String rut = String.valueOf(tm.getValueAt(jTableMatriculados.getSelectedRow(), 1));
+        //------------------------
+        //Obtencion Codigo Curso
+        String curso = (String)cbCurso.getSelectedItem();
+        Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));
+        //----------------------
+        //Obtencion Id establecimiento
+        Integer establecimientoDB = Integer.valueOf(obtenerIDEstablecimiento(curso));
+        //----------------------------
+        int opcion = JOptionPane.showConfirmDialog(null, "¿Estas Seguro de Eliminar esta Matricula?", "Eliminacion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+
+        switch(opcion){
+            case 0:
+            String cons = "DELETE FROM matriculas WHERE id_matricula = '"+matricula+"'AND cod_curso = '"+cursoDB+"'AND id_establecimiento = '"+establecimientoDB+"'AND rut_estudiante= '"+rut+"'";
+
+            try{
+                Statement stm = conn.createStatement();
+                stm.executeUpdate(cons);
+                JOptionPane.showMessageDialog(null, "Se ha eliminado Correctamente","Eliminacion Concretada", JOptionPane.INFORMATION_MESSAGE);
+                llenarTablaMatriculasFiltrado(curso);
+            }catch(SQLException e) {
+                JOptionPane.showMessageDialog(null, "No se Pudo Eliminar", "Eliminacion Fallida", JOptionPane.ERROR_MESSAGE);
+            }
+            break;
+            case 2:
+            JOptionPane.showMessageDialog(null, "Eliminacion Cancelada", "Eliminacion Cancelada",JOptionPane.INFORMATION_MESSAGE);
+            break;
+            default:
+            System.out.println("Opcion no valida");
+        }
+    }//GEN-LAST:event_cmdEliminarAluActionPerformed
+    public void llenarTablaMatriculasFiltrado(String curso){
+        Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));
+        //"SELECT * FROM matriculas, estudiante, cursos WHERE matriculas.rut_estudiante = estudiante.rut_estudiante AND matriculas.cod_curso = cursos.cod_curso";
+        String sql = "SELECT * FROM matriculas,estudiante,cursos WHERE matriculas.cod_curso LIKE '%"+cursoDB+"%' AND matriculas.rut_estudiante = estudiante.rut_estudiante AND matriculas.cod_curso = cursos.cod_curso";
+
+        llenarTablaMatriculas(sql);
+    }
+    
     public String obtenerCodigoCurso(String curso){
         String codcurso = "";
         try{
-            String sql = "SELECT cod_curso FROM cursos WHERE cursos.nombre = curso";
+            String sql = "SELECT cod_curso FROM cursos WHERE cursos.nombre = '"+curso+"'";
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(sql);
             
@@ -426,7 +505,7 @@ public class jfMatricularAlu extends javax.swing.JFrame {
     public String obtenerIDEstablecimiento(String curso){
         String idesta="";
         try{
-            String sql = "SELECT id_establecimiento FROM cursos WHERE cursos.nombre = curso";
+            String sql = "SELECT id_establecimiento FROM cursos WHERE cursos.nombre = '"+curso+"'";
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(sql);
             
@@ -480,6 +559,7 @@ public class jfMatricularAlu extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbCurso;
     private javax.swing.JButton cmdAgregarAlu;
     private javax.swing.JButton cmdAtras;
+    private javax.swing.JButton cmdEliminarAlu;
     private javax.swing.JButton cmdManejoAlu;
     private javax.swing.JButton cmdMatricular;
     private javax.swing.JLabel jLabel1;
