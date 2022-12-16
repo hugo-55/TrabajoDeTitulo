@@ -416,6 +416,18 @@ public void insertarDatos(){
         JOptionPane.showMessageDialog(null, "Hubo un Error en la Peticion", "Error de Consulta", JOptionPane.ERROR_MESSAGE);
         return;
     }
+        Validacion_RUT Validacion;
+        Validacion = new Validacion_RUT(rut_admin);
+
+        if(Validacion.Validacion_Concreta() == true){
+
+            JOptionPane.showMessageDialog(null, "El rut es valido");
+
+        }else{
+
+            JOptionPane.showMessageDialog(null, "El rut es Invalido");
+            return;
+        }
     
     if(txt_codigo_establecimiento.getText().equals("") ||
        txt_nombre.getText().equals("") ||

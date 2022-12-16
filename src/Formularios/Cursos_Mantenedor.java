@@ -3,7 +3,10 @@ package Formularios;
 
 import java.sql.*;
 import com.mysql.jdbc.Connection;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class Cursos_Mantenedor extends javax.swing.JFrame {
 
@@ -17,9 +20,99 @@ public class Cursos_Mantenedor extends javax.swing.JFrame {
     
     public Cursos_Mantenedor(String rut_admin){
         this.rut_admin = rut_admin;
+        Calendar c1 = new GregorianCalendar();
+        String dia = Integer.toString(c1.get(Calendar.DATE));
+        String mes = Integer.toString(c1.get(Calendar.MONTH));
+        String annio = Integer.toString(c1.get(Calendar.YEAR));
+        
         initComponents();
-        obtenerListadosCursos();
+         txt_annio.setText(annio);
+        llenarTabla("");
     }
+    public void insertarDatos(){
+    //Validacion de que hay un solo curso con es nombre
+  /* String rut_admin = txt_rut.getText().trim();
+    String sql = "Select count(rut_admin) as cantidad from usuario where rut_admin = '"+rut_admin+"'";
+    try{
+        Statement stm = conn.createStatement();
+        ResultSet rs = stm.executeQuery(sql);
+        if (rs.next()){
+            if(rs.getInt("cantidad") > 0){
+                JOptionPane.showMessageDialog(null, "Ya existe un usuario con este rut.", "Usuario Existente", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+        }
+    }catch(SQLException ex){
+        JOptionPane.showMessageDialog(null, "Hubo un Error en la Peticion", "Error de Consulta", JOptionPane.ERROR_MESSAGE);
+        return;
+    }*/
+    
+    
+    Calendar c1 = new GregorianCalendar();
+     String dia = Integer.toString(c1.get(Calendar.DATE));
+     String mes = Integer.toString(c1.get(Calendar.MONTH));
+     String annio = Integer.toString(c1.get(Calendar.YEAR));
+    if(txt_nombre_curso.getText().equals("") ||
+       txt_letra.getText().equals("") ){
+        JOptionPane.showMessageDialog(null, "Los campos no deben estar Vacios", "Campos Vacios", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    
+    try {
+        String SQL= "insert into cursos(nombre,nivel,letra,anno) values (?,?,?,?) ";
+        PreparedStatement pst =  conn.prepareStatement(SQL);
+        pst.setString(1 , txt_nombre_curso.getText());
+        int seleccionado =cmb_nivel.getSelectedIndex();
+        pst.setString(2 , cmb_nivel.getItemAt(seleccionado));
+        pst.setString(3 , txt_letra.getText());
+        pst.setString(4 ,  annio);
+        
+       
+        String ultimo_usuario = "select max(id_usuario) as id from usuario";
+        Statement stm = conn.createStatement();
+        ResultSet rs = stm.executeQuery(ultimo_usuario);
+        
+        if (rs.next()){
+            int id_usuario = rs.getInt("id");
+             System.out.println(id_usuario);
+            pst.setInt(4 , id_usuario);
+            pst.execute();
+         } 
+        llenarTabla("");
+        JOptionPane.showMessageDialog(null,"Registro exitoso");
+        
+        }catch(Exception e){
+        JOptionPane.showMessageDialog(null,"error de registro" +e.getMessage());
+    }
+    }
+
+    public void llenarTabla(String sql){
+       DefaultTableModel modelo = (DefaultTableModel) tbl_curso.getModel();
+        modelo.setRowCount(0);
+       tbl_curso.setModel(modelo);
+       try{
+            String cons = "";
+            if(sql.equals("")){
+                cons =  "SELECT usuario.id_usuario, establecimiento.id_establecimiento, cursos.* FROM usuario, establecimiento, cursos WHERE usuario.id_usuario = establecimiento.id_usuario AND cursos.id_establecimiento = establecimiento.id_establecimiento AND rut_admin = '"+rut_admin+"'";
+            }else{
+                cons = sql;
+            }
+            
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(cons);
+            while(rs.next()){
+                modelo.addRow( new Object[]{
+                   rs.getString("nombre"), rs.getString("nivel"), rs.getString("letra"), rs.getString("anno")
+                });
+            }
+
+            tbl_curso.setModel(modelo);
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "Error al Cargar la Lista "+ex, "Error de Carga", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 
     private String[] obtenerListadosCursos(){
         System.out.println(rut_admin);
@@ -50,7 +143,7 @@ public class Cursos_Mantenedor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        panel = new javax.swing.JPanel();
         btn_modificar = new javax.swing.JButton();
         btn_atras = new javax.swing.JButton();
         btn_eliminar = new javax.swing.JButton();
@@ -59,19 +152,20 @@ public class Cursos_Mantenedor extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txt_nombre_curso = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txt_letra = new javax.swing.JTextField();
         cmb_nivel = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        txt_anno = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txt_annio = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbl_curso = new javax.swing.JTable();
         btn_buscar = new javax.swing.JButton();
         txt_buscar = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(153, 204, 255));
+        panel.setBackground(new java.awt.Color(153, 204, 255));
 
         btn_modificar.setText("Modificar");
 
@@ -107,69 +201,68 @@ public class Cursos_Mantenedor extends javax.swing.JFrame {
 
         jLabel5.setText("Año :");
 
-        txt_anno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_annoActionPerformed(evt);
-            }
-        });
+        txt_annio.setText("jLabel7");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
+        panel.setLayout(panelLayout);
+        panelLayout.setHorizontalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btn_agregar)
                         .addGap(19, 19, 19)
                         .addComponent(btn_modificar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                         .addComponent(btn_eliminar)
                         .addGap(33, 33, 33)
                         .addComponent(btn_atras))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelLayout.createSequentialGroup()
                         .addGap(30, 30, 30)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(panelLayout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txt_nombre_curso, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelLayout.createSequentialGroup()
+                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel3))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cmb_nivel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField3)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(txt_letra)))
+                            .addGroup(panelLayout.createSequentialGroup()
                                 .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txt_annio, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_anno)))))
-                .addContainerGap(31, Short.MAX_VALUE))
+                                .addComponent(jLabel6)))))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        panelLayout.setVerticalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
                 .addGap(72, 72, 72)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txt_nombre_curso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_letra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(cmb_nivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(30, 30, 30)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(txt_anno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txt_annio))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_atras)
                     .addComponent(btn_eliminar)
                     .addComponent(btn_modificar)
@@ -177,7 +270,7 @@ public class Cursos_Mantenedor extends javax.swing.JFrame {
                 .addGap(54, 54, 54))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_curso.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -185,10 +278,10 @@ public class Cursos_Mantenedor extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nombre", "Nivel", "Letra", "Año"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbl_curso);
 
         btn_buscar.setText("Buscar");
 
@@ -199,7 +292,7 @@ public class Cursos_Mantenedor extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(37, 37, 37)
@@ -212,40 +305,36 @@ public class Cursos_Mantenedor extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24))))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_buscar)
                     .addComponent(txt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addGap(35, 35, 35)
+                .addGap(44, 44, 44)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_agregarActionPerformed
-
     private void txt_nombre_cursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nombre_cursoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_nombre_cursoActionPerformed
 
+    private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_agregarActionPerformed
+
     private void btn_atrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_atrasActionPerformed
         dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_btn_atrasActionPerformed
-
-    private void txt_annoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_annoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_annoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -295,12 +384,13 @@ public class Cursos_Mantenedor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField txt_anno;
+    private javax.swing.JPanel panel;
+    private javax.swing.JTable tbl_curso;
+    private javax.swing.JLabel txt_annio;
     private javax.swing.JTextField txt_buscar;
+    private javax.swing.JTextField txt_letra;
     private javax.swing.JTextField txt_nombre_curso;
     // End of variables declaration//GEN-END:variables
 }
