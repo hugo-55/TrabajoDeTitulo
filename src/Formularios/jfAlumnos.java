@@ -339,6 +339,7 @@ public class jfAlumnos extends javax.swing.JFrame {
         String apellido = txtApeAlu.getText().trim();
         String fecha = format1.format(jDateChooser1.getDate());
         String sexo="";
+        //String fecha = dateFormat.format(jDateChooser1.getDate());
         if(rbFem.isSelected()){
             //sexo=rbFem.getText();
             sexo="F";

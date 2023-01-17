@@ -8,9 +8,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -34,7 +37,7 @@ public class jfAsistencia extends javax.swing.JFrame {
         
         
     }
-    public void llenarTabla(String sql1){
+    public void llenarTabla(String sql){
         DefaultTableModel model = new DefaultTableModel();
         jTableAsistencia.setModel(model);
         
@@ -43,11 +46,18 @@ public class jfAsistencia extends javax.swing.JFrame {
         model.addColumn("Nombre");
         model.addColumn("Apellido");
         model.addColumn("Asistencia");
+        addCheckedBox(3,jTableAsistencia);
         try{
-            String sql = "SELECT * FROM estudiante, cursos, matriculas WHERE matriculas.cod_curso = cursos.cod_curso AND matriculas.rut_estudiante = estudiante.rut_estudiante";
+            String cons = "";
+            if (sql.equals("")){
+               cons = "SELECT * FROM estudiante, cursos,matriculas WHERE matriculas.cod_curso = cursos.cod_curso AND matriculas.rut_estudiante = estudiante.rut_estudiante"; 
+            }else{
+                cons = sql;
+            }
+            //String sql = "SELECT * FROM estudiante, cursos, matriculas WHERE matriculas.cod_curso = cursos.cod_curso AND matriculas.rut_estudiante = estudiante.rut_estudiante";
             String[] datos = new String[3];
             stm = conn.createStatement();
-            ResultSet res = stm.executeQuery(sql);
+            ResultSet res = stm.executeQuery(cons);
             while(res.next()){
                 model.addRow(new Object []{
                     res.getString("rut_estudiante"),res.getString("nombres"),res.getString("apellidos")
@@ -64,7 +74,7 @@ public class jfAsistencia extends javax.swing.JFrame {
             ResultSet rs = stm.executeQuery(sql2);
             while (rs.next()) {
                 modelo.addElement(rs.getString("nombre"));
-                cmbCurso.setModel(modelo);
+                cbCurso.setModel(modelo);
             }
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error al Cargar los Cursos "+ex, "Error de Carga", JOptionPane.ERROR_MESSAGE);
@@ -87,11 +97,14 @@ public class jfAsistencia extends javax.swing.JFrame {
         jTableAsistencia = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        cmbCurso = new javax.swing.JComboBox<>();
+        cbCurso = new javax.swing.JComboBox<>();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel7 = new javax.swing.JLabel();
         txtBusqueda = new javax.swing.JTextField();
         btnBusqueda = new javax.swing.JButton();
+        cmdAsistencia = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        cbTipoDia = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -124,10 +137,15 @@ public class jfAsistencia extends javax.swing.JFrame {
 
         jLabel3.setText("Fecha:");
 
-        cmbCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbCurso.addActionListener(new java.awt.event.ActionListener() {
+        cbCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbCurso.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbCursoMouseClicked(evt);
+            }
+        });
+        cbCurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbCursoActionPerformed(evt);
+                cbCursoActionPerformed(evt);
             }
         });
 
@@ -147,6 +165,17 @@ public class jfAsistencia extends javax.swing.JFrame {
                 btnBusquedaActionPerformed(evt);
             }
         });
+
+        cmdAsistencia.setText("Pasar Asistencia");
+        cmdAsistencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdAsistenciaActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Tipo Dia:");
+
+        cbTipoDia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Habil", "No habil" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -169,14 +198,23 @@ public class jfAsistencia extends javax.swing.JFrame {
                         .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addGap(22, 22, 22)
-                                .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(28, Short.MAX_VALUE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(22, 22, 22)
+                                        .addComponent(cmdAsistencia))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(24, 24, 24)
+                                        .addComponent(cbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbTipoDia, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,10 +232,16 @@ public class jfAsistencia extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(8, 8, 8)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(cbTipoDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(cbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(90, 90, 90)
+                        .addComponent(cmdAsistencia))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(cmdAtras)
@@ -217,7 +261,11 @@ public class jfAsistencia extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    public void addCheckedBox(int column, JTable table){
+        TableColumn tc = table.getColumnModel().getColumn(column);
+        tc.setCellEditor(table.getDefaultEditor(Boolean.class));
+        tc.setCellRenderer(table.getDefaultRenderer(Boolean.class));
+    }
     private void cmdAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAtrasActionPerformed
         dispose();
     }//GEN-LAST:event_cmdAtrasActionPerformed
@@ -234,10 +282,83 @@ public class jfAsistencia extends javax.swing.JFrame {
         llenarTabla(sql);*/
     }//GEN-LAST:event_btnBusquedaActionPerformed
 
-    private void cmbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCursoActionPerformed
+    private void cbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCursoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cmbCursoActionPerformed
+    }//GEN-LAST:event_cbCursoActionPerformed
 
+    private void cbCursoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbCursoMouseClicked
+        String curso = (String)cbCurso.getSelectedItem();
+        llenarTablaAsistenciaFiltrado(curso);
+    }//GEN-LAST:event_cbCursoMouseClicked
+
+    private void cmdAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAsistenciaActionPerformed
+        
+        for (int i = 0; i<jTableAsistencia.getRowCount();i++){
+            if(jTableAsistencia.getSelectedRow()>=0 && isSelected(i,3,jTableAsistencia)){
+            try{
+                //Obtencion de los datos (INICIO)
+                DefaultTableModel tm = (DefaultTableModel)jTableAsistencia.getModel();
+                String estado = "";
+                
+                String rut = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),0));
+                String nombre = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),1));
+                String apellido = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),2));
+                //Date fecha = jDateChooser1;
+                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+                String fecha =  format1.format(jDateChooser1.getDate());
+                if(tm.getValueAt(jTableAsistencia.getSelectedRow(),3).equals(true)){
+                    estado = "Presente";
+                }else{
+                    estado = "Ausente";
+                };
+                String tipo_dia = (String)cbTipoDia.getSelectedItem();
+                System.out.println(tipo_dia);
+                //Obtencion de datos (FINAL)
+                //Insertado de datos (INICIO)
+                try{
+                    String inser = "INSERT INTO asistencia(fecha,rut_estudiante,estado,tipo_dia) VALUES ('"+fecha+"','"+rut+"','"+estado+"','"+tipo_dia+"')";
+                    Statement stm = conn.createStatement();
+                    stm.executeUpdate(inser);
+                    JOptionPane.showMessageDialog(null, "Asistencia Pasada","Ingreso",1);
+                }catch(SQLException ei){
+                    JOptionPane.showMessageDialog(null, "Error al pasar asistencia"+ei,"Insert",3);
+                }
+                //Insertado de datos (FINAL)
+            }catch(Exception ei){
+                JOptionPane.showMessageDialog(null, "Error al procesar asistencia"+ei,"Insert",3);
+            }
+        }
+        }
+    }//GEN-LAST:event_cmdAsistenciaActionPerformed
+    
+    public boolean isSelected(int row, int column, JTable table){
+        return table.getValueAt(row,column) != null;
+    }
+    
+    public void llenarTablaAsistenciaFiltrado(String curso){
+        Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));
+        
+        String sql = "SELECT * FROM matriculas,estudiante,cursos WHERE matriculas.cod_curso LIKE '%"+cursoDB+"%' AND matriculas.rut_estudiante = estudiante.rut_estudiante AND matriculas.cod_curso = cursos.cod_curso";
+        
+        llenarTabla(sql);
+    }
+    public String obtenerCodigoCurso(String curso){
+        String codcurso = "";
+        try{
+            String sql = "SELECT cod_curso FROM cursos WHERE cursos.nombre = '"+curso+"'";
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            
+            if (rs.next()){
+                codcurso = rs.getString("cod_curso");
+            }else{
+                codcurso = "";
+            }
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(this,"ERROR AL SELECCIONAR EL CURSO","SISTEMA",JOptionPane.WARNING_MESSAGE);
+        }
+        return codcurso;
+    }
     /**
      * @param args the command line arguments
      */
@@ -275,12 +396,15 @@ public class jfAsistencia extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBusqueda;
-    private javax.swing.JComboBox<String> cmbCurso;
+    private javax.swing.JComboBox<String> cbCurso;
+    private javax.swing.JComboBox<String> cbTipoDia;
+    private javax.swing.JButton cmdAsistencia;
     private javax.swing.JButton cmdAtras;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

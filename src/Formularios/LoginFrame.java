@@ -78,7 +78,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(102, 0, 153));
+        jPanel1.setBackground(new java.awt.Color(153, 204, 255));
         jPanel1.setLayout(null);
 
         btn_ingresar.setText("Ingresar ");
@@ -142,7 +142,7 @@ public class LoginFrame extends javax.swing.JFrame {
         jPanel1.add(lbl_titulo);
         lbl_titulo.setBounds(40, 20, 360, 70);
 
-        jLabel1.setBackground(new java.awt.Color(153, 0, 153));
+        jLabel1.setBackground(new java.awt.Color(153, 204, 255));
         jPanel1.add(jLabel1);
         jLabel1.setBounds(0, 0, 440, 440);
 

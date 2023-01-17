@@ -27,10 +27,11 @@ public class AdminFrame extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         btn_agregar_establecimiento = new javax.swing.JButton();
-        btn_ver_establecimientos = new javax.swing.JButton();
         btn_salir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setAutoRequestFocus(false);
+        setBackground(new java.awt.Color(153, 204, 255));
 
         jLabel1.setText("ADMINISTRADOR");
 
@@ -38,13 +39,6 @@ public class AdminFrame extends javax.swing.JFrame {
         btn_agregar_establecimiento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_agregar_establecimientoActionPerformed(evt);
-            }
-        });
-
-        btn_ver_establecimientos.setText("Ver establecimientos");
-        btn_ver_establecimientos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_ver_establecimientosActionPerformed(evt);
             }
         });
 
@@ -67,7 +61,6 @@ public class AdminFrame extends javax.swing.JFrame {
                 .addGap(92, 92, 92)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btn_salir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btn_ver_establecimientos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btn_agregar_establecimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(105, Short.MAX_VALUE))
         );
@@ -76,11 +69,9 @@ public class AdminFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel1)
-                .addGap(38, 38, 38)
+                .addGap(68, 68, 68)
                 .addComponent(btn_agregar_establecimiento)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_ver_establecimientos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
                 .addComponent(btn_salir)
                 .addGap(41, 41, 41))
         );
@@ -92,10 +83,6 @@ public class AdminFrame extends javax.swing.JFrame {
         Establecimiento_Agregar abrir = new Establecimiento_Agregar();
         abrir.setVisible(true);
     }//GEN-LAST:event_btn_agregar_establecimientoActionPerformed
-
-    private void btn_ver_establecimientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ver_establecimientosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_ver_establecimientosActionPerformed
 
     private void btn_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salirActionPerformed
          System.exit(0);
@@ -139,7 +126,6 @@ public class AdminFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_agregar_establecimiento;
     private javax.swing.JButton btn_salir;
-    private javax.swing.JButton btn_ver_establecimientos;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 

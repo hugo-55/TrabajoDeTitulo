@@ -397,15 +397,23 @@ public class jfMatricularAlu extends javax.swing.JFrame {
     private void cmdMatricularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMatricularActionPerformed
 
         if (jTableAlu.getSelectedRow()>=0){
+            //System.out.println("Ingreso en el If");
             try{
                 DefaultTableModel tm = (DefaultTableModel)jTableAlu.getModel();
+                
                 String rut = String.valueOf(tm.getValueAt(jTableAlu.getSelectedRow(),0));
+                System.out.println(rut);
                 String nombre = String.valueOf(tm.getValueAt(jTableAlu.getSelectedRow(),1));
+                System.out.println(nombre);
                 String apellido = String.valueOf(tm.getValueAt(jTableAlu.getSelectedRow(),2));
+                System.out.println(apellido);
                 //Seleccion de curso del comboBox
                 String curso = (String)cbCurso.getSelectedItem();
+                System.out.println(curso);
                 Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));
+                System.out.println(cursoDB);
                 Integer establecimientoDB = Integer.valueOf(obtenerIDEstablecimiento(curso));
+                System.out.println(establecimientoDB);
                 //-------------------------------
                 //Obtencion de VTC y Estado
                 Integer vtc = 0;
@@ -413,16 +421,11 @@ public class jfMatricularAlu extends javax.swing.JFrame {
                 String estado = "Matriculado";
                 //Obtencion del año
                 Integer anno = (Integer)jYearChooser1.getYear();
+                //System.out.println("dentro del primer try");
                 
                 //Insert de Matricula
-                String inser = "INSERT INTO matriculas(cod_curso,id_establecimiento,rut_estudiante,anno,vtc,estado) VALUES ('"+cursoDB+"','"+establecimientoDB+"','"+rut+"','"+anno+"','"+vtc+"','"+estado+"')";
-                try{
-                    Statement stm1 = conn.createStatement();
-                    stm1.executeUpdate(inser);
-                    JOptionPane.showMessageDialog(null, "Alumno matriculado :D","Ingreso",1);
-                }catch(SQLException ei){
-                    JOptionPane.showMessageDialog(null, "Error al matricular al alumno :C"+ei,"Insert",3);
-                }
+                
+                
                 //Verificacion no terminada
                 //String verif = "SELECT * FROM matriculas WHERE matriculas.cod_curso = '"+cursoDB+"' AND matriculas.id_establecimiento = '"+establecimientoDB+"' AND matriculas.rut_estudiante = '"+rut+"'";
                 /*try{
@@ -477,7 +480,15 @@ public class jfMatricularAlu extends javax.swing.JFrame {
                 }catch(SQLException e){
                     JOptionPane.showMessageDialog(null, "No se Obtuvo el año","ERROR",JOptionPane.WARNING_MESSAGE);
                 }*/
-            }catch(HeadlessException | NumberFormatException e){
+                try{
+                    String inser = "INSERT INTO matriculas(cod_curso,id_establecimiento,rut_estudiante,anno,vtc,estado) VALUES ('"+cursoDB+"','"+establecimientoDB+"','"+rut+"','"+anno+"','"+vtc+"','"+estado+"')";
+                    Statement stm = conn.createStatement();
+                    stm.executeUpdate(inser);
+                    JOptionPane.showMessageDialog(null, "Alumno matriculado :D","Ingreso",1);
+                }catch(SQLException ei){
+                    JOptionPane.showMessageDialog(null, "Error al matricular al alumno :C"+ei,"Insert",3);
+                }
+            }catch(Exception e){
                 JOptionPane.showMessageDialog(this,"ERROR DESPUES DEL INSERT");
             }
         }else{
