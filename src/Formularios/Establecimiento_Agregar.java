@@ -83,6 +83,8 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
         txt_codigo_establecimiento = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         txt_rut = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        txt_password_r = new javax.swing.JPasswordField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_establecimiento = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
@@ -142,6 +144,8 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
 
         jLabel10.setText("Rut :");
 
+        jLabel11.setText("Repetir Contraseña :");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -161,12 +165,7 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
                                 .addComponent(btn_atras, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(110, 110, 110)
-                                .addComponent(jLabel1))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cmb_tipo_admin, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel1)))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
@@ -196,7 +195,16 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txt_password)
-                                    .addComponent(txt_rut))))))
+                                    .addComponent(txt_rut)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cmb_tipo_admin, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(18, 18, 18)
+                                .addComponent(txt_password_r)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -228,11 +236,15 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addGap(18, 18, 18)
+                .addGap(11, 11, 11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(txt_password_r, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(cmb_tipo_admin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_agregar)
                     .addComponent(btn_atras)
@@ -428,6 +440,11 @@ public void insertarDatos(){
             JOptionPane.showMessageDialog(null, "El rut es Invalido");
             return;
         }
+        
+    if(!String.valueOf(txt_password.getPassword()).equals(String.valueOf(txt_password_r.getPassword()))){
+        JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "no coinciden", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
     
     if(txt_codigo_establecimiento.getText().equals("") ||
        txt_nombre.getText().equals("") ||
@@ -549,6 +566,7 @@ public void eliminarDatos(){
     private javax.swing.JComboBox<String> cmb_tipo_educacion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -565,6 +583,7 @@ public void eliminarDatos(){
     private javax.swing.JTextField txt_nom_admin;
     private javax.swing.JTextField txt_nombre;
     private javax.swing.JPasswordField txt_password;
+    private javax.swing.JPasswordField txt_password_r;
     private javax.swing.JTextField txt_rut;
     // End of variables declaration//GEN-END:variables
 }
