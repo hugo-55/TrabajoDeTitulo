@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 public class jfAgregarAlu extends javax.swing.JFrame {
     Connection conex=null;
     Statement stm=null;
+    
    // Conexion conex = new Conexion();
     
     
@@ -25,6 +26,7 @@ public class jfAgregarAlu extends javax.swing.JFrame {
     public jfAgregarAlu() {
         conectar();
         initComponents();
+        jDateChooser1.setMaxSelectableDate(new Date());
     }
     public void conectar(){
         String url="jdbc:mysql://localhost:3306/bd_tt";

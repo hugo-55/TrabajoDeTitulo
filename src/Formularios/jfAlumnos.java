@@ -32,6 +32,7 @@ public class jfAlumnos extends javax.swing.JFrame {
         //conectar();
         initComponents();
         llenarTabla("");
+        jDateChooser1.setMaxSelectableDate(new Date());
         /*-------------------- Definicion de tabla ----------------------*/
         /*try{
             stm = conn.createStatement();
@@ -323,7 +324,7 @@ public class jfAlumnos extends javax.swing.JFrame {
 
     private void cmdModificarAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdModificarAluActionPerformed
         
-        SimpleDateFormat format1 = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
         
         if(txtRutAlu.getText().trim().isEmpty()||
            txtNomAlu.getText().trim().isEmpty()||
@@ -400,7 +401,7 @@ public class jfAlumnos extends javax.swing.JFrame {
                     fechaSeleccionada = format1.parse(fecha);
                 } catch (ParseException e) {
                     fechaSeleccionada = new Date();
-                    JOptionPane.showMessageDialog(this, "La fecha seleccionada no es válida. Por favor ingresela otra vez", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Error al obtener la fecha de nacimiento. Por favor ingresela otra vez", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 if (sexo.equals("M")) {
                     rbMasc.setSelected(true);
@@ -450,7 +451,8 @@ public class jfAlumnos extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Se ha eliminado Correctamente","Eliminacion Concretada", JOptionPane.INFORMATION_MESSAGE);
                     llenarTabla("");
                 }catch(SQLException e) {
-                    JOptionPane.showMessageDialog(null, "No se Pudo Eliminar", "Eliminacion Fallida", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"No se puede eliminar un alumno aun matriculado","Alumno Matriculado",JOptionPane.ERROR_MESSAGE);
+                    //JptionPane.showMessageDialog(null, "No se Pudo Eliminar", "Eliminacion Fallida", JOptionPane.ERROR_MESSAGE);
                 }
                 break;
             case 2:

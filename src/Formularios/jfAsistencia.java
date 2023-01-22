@@ -4,6 +4,7 @@
  */
 package Formularios;
 
+import java.awt.Checkbox;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,6 +31,7 @@ public class jfAsistencia extends javax.swing.JFrame {
     public jfAsistencia() {
         initComponents();
         llenarTabla("");
+        llenarTablaAsistenciaPasada("");
         JOptionPane.showMessageDialog(null, "No olvide seleccionar el curso para la asistencia", "Asistencia", JOptionPane.INFORMATION_MESSAGE);
         
         
@@ -97,7 +99,6 @@ public class jfAsistencia extends javax.swing.JFrame {
         jTableAsistencia = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        cbCurso = new javax.swing.JComboBox<>();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel7 = new javax.swing.JLabel();
         txtBusqueda = new javax.swing.JTextField();
@@ -105,10 +106,14 @@ public class jfAsistencia extends javax.swing.JFrame {
         cmdAsistencia = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         cbTipoDia = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableAsistenciaPasada = new javax.swing.JTable();
+        cbCurso = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1039, 417));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Asistencia");
@@ -136,18 +141,6 @@ public class jfAsistencia extends javax.swing.JFrame {
         jLabel2.setText("Curso");
 
         jLabel3.setText("Fecha:");
-
-        cbCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbCurso.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cbCursoMouseClicked(evt);
-            }
-        });
-        cbCurso.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbCursoActionPerformed(evt);
-            }
-        });
 
         jDateChooser1.setDateFormatString("dd-MM-yyyy");
 
@@ -177,20 +170,48 @@ public class jfAsistencia extends javax.swing.JFrame {
 
         cbTipoDia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Habil", "No habil" }));
 
+        jTableAsistenciaPasada.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTableAsistenciaPasada);
+
+        cbCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbCurso.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbCursoMouseClicked(evt);
+            }
+        });
+        cbCurso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbCursoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(cmdAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -198,23 +219,22 @@ public class jfAsistencia extends javax.swing.JFrame {
                         .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(22, 22, 22)
-                                        .addComponent(cmdAsistencia))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(24, 24, 24)
-                                        .addComponent(cbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
                                     .addComponent(jLabel3))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbTipoDia, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(26, Short.MAX_VALUE))
+                                    .addComponent(cbTipoDia, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(24, 24, 24)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmdAsistencia)
+                                    .addComponent(cbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,21 +250,24 @@ public class jfAsistencia extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(8, 8, 8)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(cbTipoDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(cbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(90, 90, 90)
-                        .addComponent(cmdAsistencia))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(cmdAtras)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(8, 8, 8)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(cbTipoDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(cbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(41, 41, 41)
+                                .addComponent(cmdAsistencia))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(cmdAtras))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(74, Short.MAX_VALUE))
         );
 
@@ -252,7 +275,7 @@ public class jfAsistencia extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1165, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,6 +284,47 @@ public class jfAsistencia extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    public void llenarTablaAsistenciaPasada(String sql){
+        DefaultTableModel model = new DefaultTableModel();
+        jTableAsistenciaPasada.setModel(model);
+        
+        
+        model.addColumn("Rut");
+        model.addColumn("Nombre");
+        model.addColumn("Apellido");
+        model.addColumn("Fecha");
+        model.addColumn("Asistencia");
+        model.addColumn("");
+        addCheckedBox(5,jTableAsistenciaPasada);
+        //Checkbox checkbox1 = new Checkbox();
+        
+        try{
+            String cons = "";
+            if (sql.equals("")){
+                cons = "SELECT * FROM estudiante, asistencia WHERE estudiante.rut_estudiante = asistencia.rut_estudiante"; 
+            }else{
+                cons = sql;
+            }
+            stm = conn.createStatement();
+            ResultSet res = stm.executeQuery(cons);
+            while(res.next()){
+                model.addRow(new Object []{
+                    res.getString("rut_estudiante"),res.getString("nombres"),res.getString("apellidos"),res.getDate("fecha"),res.getString("estado"),
+                    
+                });
+                if("estado".equals("Presente")){
+                    addCheckedBox(5,jTableAsistenciaPasada);
+                }
+            }
+            jTableAsistenciaPasada.setModel(model);
+        }catch(SQLException ex){
+            
+        }
+        
+    }
+    //Funcion para crear un checkbox en cualquier lado pero no funcion elsetSelected
+    //public Checkbox chekbox1 = new Checkbox().setSelected(true);
+    
     public void addCheckedBox(int column, JTable table){
         TableColumn tc = table.getColumnModel().getColumn(column);
         tc.setCellEditor(table.getDefaultEditor(Boolean.class));
@@ -282,54 +346,92 @@ public class jfAsistencia extends javax.swing.JFrame {
         llenarTabla(sql);*/
     }//GEN-LAST:event_btnBusquedaActionPerformed
 
-    private void cbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCursoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbCursoActionPerformed
+    private void cmdAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAsistenciaActionPerformed
+        
+        for (int i = 0; i<jTableAsistencia.getRowCount();i++){
+            //Trozo de codigo sacado del if de abajo jTableAsistencia.getSelectedRow()>=0 && 
+            /*Boolean check = false;
+            if(isSelected(i,3,jTableAsistencia)){
+                check = true;
+            }else{
+                check = false;
+            }*/
+            //System.out.println("Pasada numero :"+i);
+            if(isSelected(i,3,jTableAsistencia)){
+                //try{
+                    //Obtencion de los datos (INICIO)
+                    DefaultTableModel tm = (DefaultTableModel)jTableAsistencia.getModel();
+                    String estado = "";
+                
+                    String rut = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),0));
+                    String nombre = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),1));
+                    String apellido = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),2));
+                    //Date fecha = jDateChooser1;
+                    SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+                    String fecha =  format1.format(jDateChooser1.getDate());
+                    String tipo_dia = (String)cbTipoDia.getSelectedItem();
+                    //Obtencion de datos (FINAL)
+                    estado = "Presente";
+                    //Insertado de datos (INICIO)
+                    try{
+                        String inser = "INSERT INTO asistencia(fecha,rut_estudiante,estado,tipo_dia) VALUES ('"+fecha+"','"+rut+"','"+estado+"','"+tipo_dia+"')";
+                        Statement stm = conn.createStatement();
+                        stm.executeUpdate(inser);
+                        JOptionPane.showMessageDialog(null, "Asistencia Pasada","Ingreso",1);
+                    }catch(SQLException ei){
+                        JOptionPane.showMessageDialog(null, "Error al pasar asistencia"+ei,"Insert",3);
+                    }
+                    //Insertado de datos (FINAL)
+                    //System.out.println("Salida de try presente");
+                /*}catch(Exception ei){
+                    JOptionPane.showMessageDialog(null, "Error al procesar asistencia"+ei,"Insert",3);
+                }*/
+            }else{
+                //try{
+                    System.out.println("Ingreso al try de ausente");
+                    //Obtencion de los datos (INICIO)
+                    DefaultTableModel tm = (DefaultTableModel)jTableAsistencia.getModel();
+                    String estado = "";
+                
+                    String rut = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),0));
+                    String nombre = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),1));
+                    String apellido = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),2));
+                    //Date fecha = jDateChooser1;
+                    SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+                    String fecha =  format1.format(jDateChooser1.getDate());
+                    
+                    String tipo_dia = (String)cbTipoDia.getSelectedItem();
+                    //Obtencion de datos (FINAL)
+                    
+                    estado = "Ausente";
+                    //Insertado de datos (INICIO)
+                    try{
+                        String inser = "INSERT INTO asistencia(fecha,rut_estudiante,estado,tipo_dia) VALUES ('"+fecha+"','"+rut+"','"+estado+"','"+tipo_dia+"')";
+                        Statement stm = conn.createStatement();
+                        stm.executeUpdate(inser);
+                        JOptionPane.showMessageDialog(null, "Asistencia Pasada","Ingreso",1);
+                    }catch(SQLException ei){
+                        JOptionPane.showMessageDialog(null, "Error al pasar asistencia"+ei,"Insert",3);
+                    }
+                    //Insertado de datos (FINAL)
+                /*}catch(Exception ei){
+                    JOptionPane.showMessageDialog(null, "Error al procesar asistencia"+ei,"Insert",3);
+                }*/
+            }
+        }
+        llenarTablaAsistenciaPasada("");
+    }//GEN-LAST:event_cmdAsistenciaActionPerformed
 
+    
     private void cbCursoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbCursoMouseClicked
+        //System.out.println("Clickeado");
         String curso = (String)cbCurso.getSelectedItem();
         llenarTablaAsistenciaFiltrado(curso);
     }//GEN-LAST:event_cbCursoMouseClicked
 
-    private void cmdAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAsistenciaActionPerformed
-        
-        for (int i = 0; i<jTableAsistencia.getRowCount();i++){
-            if(jTableAsistencia.getSelectedRow()>=0 && isSelected(i,3,jTableAsistencia)){
-            try{
-                //Obtencion de los datos (INICIO)
-                DefaultTableModel tm = (DefaultTableModel)jTableAsistencia.getModel();
-                String estado = "";
-                
-                String rut = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),0));
-                String nombre = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),1));
-                String apellido = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),2));
-                //Date fecha = jDateChooser1;
-                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-                String fecha =  format1.format(jDateChooser1.getDate());
-                if(tm.getValueAt(jTableAsistencia.getSelectedRow(),3).equals(true)){
-                    estado = "Presente";
-                }else{
-                    estado = "Ausente";
-                };
-                String tipo_dia = (String)cbTipoDia.getSelectedItem();
-                System.out.println(tipo_dia);
-                //Obtencion de datos (FINAL)
-                //Insertado de datos (INICIO)
-                try{
-                    String inser = "INSERT INTO asistencia(fecha,rut_estudiante,estado,tipo_dia) VALUES ('"+fecha+"','"+rut+"','"+estado+"','"+tipo_dia+"')";
-                    Statement stm = conn.createStatement();
-                    stm.executeUpdate(inser);
-                    JOptionPane.showMessageDialog(null, "Asistencia Pasada","Ingreso",1);
-                }catch(SQLException ei){
-                    JOptionPane.showMessageDialog(null, "Error al pasar asistencia"+ei,"Insert",3);
-                }
-                //Insertado de datos (FINAL)
-            }catch(Exception ei){
-                JOptionPane.showMessageDialog(null, "Error al procesar asistencia"+ei,"Insert",3);
-            }
-        }
-        }
-    }//GEN-LAST:event_cmdAsistenciaActionPerformed
+    private void cbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCursoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbCursoActionPerformed
     
     public boolean isSelected(int row, int column, JTable table){
         return table.getValueAt(row,column) != null;
@@ -342,6 +444,13 @@ public class jfAsistencia extends javax.swing.JFrame {
         
         llenarTabla(sql);
     }
+    /*public void llenarTablaAsistenciaPasadaFiltrado(String curso){
+        Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));
+        
+        String sql = "SELECT * FROM estudiante, asistencia WHERE estudiante.rut_estudiante = asistencia.rut_estudiante"; 
+        
+        llenarTablaAsistenciaPasada(sql);
+    }*/
     public String obtenerCodigoCurso(String curso){
         String codcurso = "";
         try{
@@ -408,7 +517,9 @@ public class jfAsistencia extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableAsistencia;
+    private javax.swing.JTable jTableAsistenciaPasada;
     private javax.swing.JTextField txtBusqueda;
     // End of variables declaration//GEN-END:variables
 }
