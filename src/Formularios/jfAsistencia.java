@@ -4,21 +4,40 @@
  */
 package Formularios;
 
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Checkbox;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.UndoableEditListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
+import javax.swing.text.Position;
+import javax.swing.text.Segment;
 
 /**
  *
@@ -191,6 +210,7 @@ public class jfAsistencia extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableAsistenciaPasada = new javax.swing.JTable();
         cbCurso = new javax.swing.JComboBox<>();
+        btn_generar_reporte = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -223,8 +243,6 @@ public class jfAsistencia extends javax.swing.JFrame {
         jLabel2.setText("Curso");
 
         jLabel3.setText("Fecha:");
-
-        jDateChooser1.setDateFormatString("dd-MM-yyyy");
 
         jLabel7.setText("Busqueda:");
 
@@ -277,6 +295,13 @@ public class jfAsistencia extends javax.swing.JFrame {
             }
         });
 
+        btn_generar_reporte.setText("Generar Reporte");
+        btn_generar_reporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_generar_reporteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -293,30 +318,36 @@ public class jfAsistencia extends javax.swing.JFrame {
                                 .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(cmdAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(38, 38, 38)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbTipoDia, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(24, 24, 24)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmdAsistencia)
-                                    .addComponent(cbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41))))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel3))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(cbTipoDia, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(24, 24, 24)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(cmdAsistencia)
+                                            .addComponent(cbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btn_generar_reporte)
+                                .addGap(55, 55, 55))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -349,7 +380,10 @@ public class jfAsistencia extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(cmdAtras))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_generar_reporte)))
                 .addContainerGap(74, Short.MAX_VALUE))
         );
 
@@ -505,6 +539,179 @@ public class jfAsistencia extends javax.swing.JFrame {
     private void cbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCursoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbCursoActionPerformed
+
+    private void btn_generar_reporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generar_reporteActionPerformed
+       String dateTime = DateTimeFormatter.ofPattern("YYYY-MM").format(LocalDateTime.now()); //Devuelve Fecha formato 2022-08
+        
+        File fichero = new File("src/principal/rutaReportes.txt"); //buscamos la ruta donde guardar reportes
+        if(!fichero.exists()) {
+            JOptionPane.showMessageDialog(null, "No hay una ruta especificada para la creacion de los reportes, por favor configurela en ADMINISTRACION", "Configure la ruta para reportes", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        FileReader fr;
+        String ruta = ""; //obtenemos la ruta
+        try {
+            fr = new FileReader(fichero);
+            BufferedReader br = new BufferedReader(fr);
+            ruta = br.readLine();
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
+            JOptionPane.showMessageDialog(null, "Ruta no Encontrada","Error de ruta",JOptionPane.ERROR_MESSAGE);
+            return;
+        } catch (IOException e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(null, "No se pudo leer el archivo","Error de lectura",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        //aca creamos ruta para el guardado de carpetas mensuales // c:/user/juan/documents/prueba/{{2022-08}}
+        File fichero2 = new File(ruta+"/"+dateTime);
+        
+        if(!fichero2.exists()){ // si el fichero no existe, se procede a crearlo
+            if(!fichero2.mkdir()){
+                JOptionPane.showMessageDialog(null, "No se pudo crear el fichero especificado","Error al crear fichero",JOptionPane.ERROR_MESSAGE);
+            }
+        }else{ //si el fichero existe se guardan los archivos diarios en el
+            String dateTime2 = DateTimeFormatter.ofPattern("MM-dd").format(LocalDateTime.now());
+            File fichero3 = new File(ruta + "/" + dateTime + "/" + dateTime2+".pdf");
+            
+            Document documento = new Document() {
+                @Override
+                public int getLength() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void addDocumentListener(DocumentListener listener) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void removeDocumentListener(DocumentListener listener) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void addUndoableEditListener(UndoableEditListener listener) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void removeUndoableEditListener(UndoableEditListener listener) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public Object getProperty(Object key) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void putProperty(Object key, Object value) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void remove(int offs, int len) throws BadLocationException {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public String getText(int offset, int length) throws BadLocationException {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void getText(int offset, int length, Segment txt) throws BadLocationException {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public Position getStartPosition() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public Position getEndPosition() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public Position createPosition(int offs) throws BadLocationException {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public Element[] getRootElements() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public Element getDefaultRootElement() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void render(Runnable r) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+            };
+            try{
+                PdfWriter.getInstance(documento, new FileOutputStream(fichero3));
+                
+                documento.open();
+                PdfPTable tabla = new PdfPTable(5);
+                tabla.addCell("ID");
+                tabla.addCell("Fecha");
+                tabla.addCell("Tipo Pago");
+                tabla.addCell("Total");
+                tabla.addCell("Vendedor");
+                
+                String cons = "Select id_venta, fecha_hora, tipo_pago, total_pago, nombre_completo from ventas, empleadott where estado_venta = 'A' and ventas.rut_empleado = empleadott.rut_empleado and fecha_hora  >= trunc(sysdate) and fecha_hora < trunc(sysdate + 1)";
+                String total;
+                int totalTotal = 0;
+                try{
+                    Statement stm = conn.createStatement();
+                    ResultSet rs = stm.executeQuery(cons);
+                    
+                    while(rs.next()){
+                        totalTotal += rs.getInt("total_pago");
+                        total = formato.format(rs.getInt("total_pago"));
+                        tabla.addCell(String.valueOf(rs.getInt("id_venta")));
+                        tabla.addCell(rs.getString("fecha_hora"));
+                        if(rs.getString("tipo_pago").equalsIgnoreCase("E")){
+                            tabla.addCell("Efectivo");
+                        }else{
+                            tabla.addCell("Debito");
+                        }
+                        tabla.addCell(total);
+                        tabla.addCell(rs.getString("nombre_completo"));
+                        
+                        
+                    }
+                    tabla.addCell("");
+                    tabla.addCell("");
+                    tabla.addCell("");
+                    tabla.addCell("Ganancia: ");
+                    tabla.addCell(formato.format(totalTotal));
+                    
+                }catch(SQLException ex){
+                    JOptionPane.showMessageDialog(null, "Error al obtener los datos de las ventas", "Error de Obtencion", JOptionPane.ERROR_MESSAGE);
+                }
+                documento.add(tabla);
+                
+            }catch(DocumentException | FileNotFoundException ex){
+                System.out.println(ex);
+            }
+            documento.close();
+            JOptionPane.showMessageDialog(null, "Reporte Creado y Caja Cerrada Exitosamente!", "Caja Cerrada",JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btn_generar_reporteActionPerformed
     
     public boolean isSelected(int row, int column, JTable table){
         return table.getValueAt(row,column) != null;
@@ -577,6 +784,7 @@ public class jfAsistencia extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBusqueda;
+    private javax.swing.JButton btn_generar_reporte;
     private javax.swing.JComboBox<String> cbCurso;
     private javax.swing.JComboBox<String> cbTipoDia;
     private javax.swing.JButton cmdAsistencia;
