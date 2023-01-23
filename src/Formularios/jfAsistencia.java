@@ -7,6 +7,9 @@ package Formularios;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Document;
+
+
 import java.awt.Checkbox;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,7 +37,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
+
 import javax.swing.text.Element;
 import javax.swing.text.Position;
 import javax.swing.text.Segment;
@@ -541,9 +544,9 @@ public class jfAsistencia extends javax.swing.JFrame {
     }//GEN-LAST:event_cbCursoActionPerformed
 
     private void btn_generar_reporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generar_reporteActionPerformed
-       String dateTime = DateTimeFormatter.ofPattern("YYYY-MM").format(LocalDateTime.now()); //Devuelve Fecha formato 2022-08
+       String dateTime = DateTimeFormatter.ofPattern("YYYY-MM").format(LocalDateTime.now()); //Devuelve Fecha formato 2023-01
         
-        File fichero = new File("src/principal/rutaReportes.txt"); //buscamos la ruta donde guardar reportes
+        File fichero = new File("src/Formularios/rutaReportes.txt"); //buscamos la ruta donde guardar reportes
         if(!fichero.exists()) {
             JOptionPane.showMessageDialog(null, "No hay una ruta especificada para la creacion de los reportes, por favor configurela en ADMINISTRACION", "Configure la ruta para reportes", JOptionPane.WARNING_MESSAGE);
             return;
@@ -551,6 +554,7 @@ public class jfAsistencia extends javax.swing.JFrame {
         
         FileReader fr;
         String ruta = ""; //obtenemos la ruta
+        
         try {
             fr = new FileReader(fichero);
             BufferedReader br = new BufferedReader(fr);
@@ -564,8 +568,9 @@ public class jfAsistencia extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "No se pudo leer el archivo","Error de lectura",JOptionPane.ERROR_MESSAGE);
             return;
         }
-        //aca creamos ruta para el guardado de carpetas mensuales // c:/user/juan/documents/prueba/{{2022-08}}
-        File fichero2 = new File(ruta+"/"+dateTime);
+        
+        
+        File fichero2 = new File(ruta+"/"+dateTime); //rutas mensuales //ruta/2022/08
         
         if(!fichero2.exists()){ // si el fichero no existe, se procede a crearlo
             if(!fichero2.mkdir()){
@@ -575,133 +580,81 @@ public class jfAsistencia extends javax.swing.JFrame {
             String dateTime2 = DateTimeFormatter.ofPattern("MM-dd").format(LocalDateTime.now());
             File fichero3 = new File(ruta + "/" + dateTime + "/" + dateTime2+".pdf");
             
-            Document documento = new Document() {
-                @Override
-                public int getLength() {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            int cantPresentes = 0, cantAusentes = 0;
+            
+            
+            String cons_pres = "select count(*) as cant_presentes from asistencia where asistencia.estado = 'Presente'";
+            String cons_aus = "select count(*) as cant_ausentes from asistencia where asistencia.estado = 'Ausente'";
+            try{
+                Statement stm1 = conn.createStatement();
+                ResultSet rs1 = stm1.executeQuery(cons_pres);
+                
+                if(rs1.next()){
+                    cantPresentes = rs1.getInt("cant_presentes");
                 }
-
-                @Override
-                public void addDocumentListener(DocumentListener listener) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
+            }catch(SQLException ex){
+                System.out.println("error de consulta");
+            }
+            
+            try{
+                Statement stm2 = conn.createStatement();
+                ResultSet rs2 = stm2.executeQuery(cons_aus);
+                
+                if(rs2.next()){
+                    cantAusentes = rs2.getInt("cant_ausentes");
                 }
-
-                @Override
-                public void removeDocumentListener(DocumentListener listener) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void addUndoableEditListener(UndoableEditListener listener) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void removeUndoableEditListener(UndoableEditListener listener) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public Object getProperty(Object key) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void putProperty(Object key, Object value) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void remove(int offs, int len) throws BadLocationException {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public String getText(int offset, int length) throws BadLocationException {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void getText(int offset, int length, Segment txt) throws BadLocationException {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public Position getStartPosition() {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public Position getEndPosition() {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public Position createPosition(int offs) throws BadLocationException {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public Element[] getRootElements() {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public Element getDefaultRootElement() {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void render(Runnable r) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-            };
+                
+            }catch(SQLException ex){
+                System.out.println("error de consulta");
+            }
+            
+            Document documento = new Document() {};
             try{
                 PdfWriter.getInstance(documento, new FileOutputStream(fichero3));
                 
                 documento.open();
                 PdfPTable tabla = new PdfPTable(5);
-                tabla.addCell("ID");
+                tabla.addCell("RUT");
+                tabla.addCell("Nombre");
+                tabla.addCell("Apellido");
                 tabla.addCell("Fecha");
-                tabla.addCell("Tipo Pago");
-                tabla.addCell("Total");
-                tabla.addCell("Vendedor");
+                tabla.addCell("Asistencia");
                 
-                String cons = "Select id_venta, fecha_hora, tipo_pago, total_pago, nombre_completo from ventas, empleadott where estado_venta = 'A' and ventas.rut_empleado = empleadott.rut_empleado and fecha_hora  >= trunc(sysdate) and fecha_hora < trunc(sysdate + 1)";
-                String total;
-                int totalTotal = 0;
+                String cons = "SELECT * FROM estudiante, asistencia WHERE estudiante.rut_estudiante = asistencia.rut_estudiante";
+                
                 try{
                     Statement stm = conn.createStatement();
                     ResultSet rs = stm.executeQuery(cons);
                     
                     while(rs.next()){
-                        totalTotal += rs.getInt("total_pago");
-                        total = formato.format(rs.getInt("total_pago"));
-                        tabla.addCell(String.valueOf(rs.getInt("id_venta")));
-                        tabla.addCell(rs.getString("fecha_hora"));
-                        if(rs.getString("tipo_pago").equalsIgnoreCase("E")){
-                            tabla.addCell("Efectivo");
-                        }else{
-                            tabla.addCell("Debito");
-                        }
-                        tabla.addCell(total);
-                        tabla.addCell(rs.getString("nombre_completo"));
-                        
-                        
+                        tabla.addCell(rs.getString("rut_estudiante"));
+                        tabla.addCell(rs.getString("nombres"));
+                        tabla.addCell(rs.getString("apellidos"));
+                        tabla.addCell(rs.getString("fecha"));
+                        tabla.addCell(rs.getString("estado"));
                     }
                     tabla.addCell("");
                     tabla.addCell("");
                     tabla.addCell("");
-                    tabla.addCell("Ganancia: ");
-                    tabla.addCell(formato.format(totalTotal));
+                    tabla.addCell("");
+                    tabla.addCell("");
+                    //3ra fila
+                    tabla.addCell("");
+                    tabla.addCell("");
+                    tabla.addCell("");
+                    tabla.addCell("Ausentes");
+                    tabla.addCell(String.valueOf(cantAusentes));
+                    //4ta Fila
+                    tabla.addCell("");
+                    tabla.addCell("");
+                    tabla.addCell("");
+                    tabla.addCell("Presentes");
+                    tabla.addCell(String.valueOf(cantPresentes));
+                    //tabla.addCell(formato.format(totalTotal));
                     
                 }catch(SQLException ex){
-                    JOptionPane.showMessageDialog(null, "Error al obtener los datos de las ventas", "Error de Obtencion", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Error al obtener los datos de la asistenica", "Error de Obtencion", JOptionPane.ERROR_MESSAGE);
                 }
                 documento.add(tabla);
                 
@@ -709,8 +662,13 @@ public class jfAsistencia extends javax.swing.JFrame {
                 System.out.println(ex);
             }
             documento.close();
-            JOptionPane.showMessageDialog(null, "Reporte Creado y Caja Cerrada Exitosamente!", "Caja Cerrada",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Reporte Creado Exitosamente!", "Reporte Creado",JOptionPane.INFORMATION_MESSAGE);
         }
+        
+        
+        
+        
+        
     }//GEN-LAST:event_btn_generar_reporteActionPerformed
     
     public boolean isSelected(int row, int column, JTable table){
