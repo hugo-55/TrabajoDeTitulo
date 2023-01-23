@@ -70,8 +70,6 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        cmb_tipo_admin = new javax.swing.JComboBox<>();
         btn_agregar = new javax.swing.JButton();
         btn_atras = new javax.swing.JButton();
         cmb_tipo_educacion = new javax.swing.JComboBox<>();
@@ -105,10 +103,6 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
         jLabel3.setText("Nombre administrador :");
 
         jLabel4.setText("Contraseña :");
-
-        jLabel6.setText("Tipo de administrador :");
-
-        cmb_tipo_admin.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "UTP", "ADMIN" }));
 
         btn_agregar.setText("Agregar");
         btn_agregar.addActionListener(new java.awt.event.ActionListener() {
@@ -197,11 +191,6 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
                                     .addComponent(txt_password)
                                     .addComponent(txt_rut)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cmb_tipo_admin, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel11)
                                 .addGap(18, 18, 18)
                                 .addComponent(txt_password_r)))))
@@ -240,11 +229,7 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(txt_password_r, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(cmb_tipo_admin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_agregar)
                     .addComponent(btn_atras)
@@ -381,9 +366,10 @@ public class Establecimiento_Agregar extends javax.swing.JFrame {
         
     String id_establecimiento = txt_codigo_establecimiento.getText().trim();
     String rut_admin = txt_rut.getText().trim();
+    String tipo_admin = "UTP";
     
     String sql = "UPDATE establecimiento SET nombre = '"+txt_nombre.getText().trim()+"', tipo_educacion = '"+cmb_tipo_educacion.getItemAt(cmb_tipo_educacion.getSelectedIndex())+"' WHERE id_establecimiento = '"+id_establecimiento+"'";
-    String sql2 = "UPDATE usuario SET nombre_usuario = '"+txt_nom_admin.getText().trim()+"', tipo_usuario = '"+cmb_tipo_admin.getItemAt(cmb_tipo_admin.getSelectedIndex())+"', clave = '"+String.valueOf(txt_password.getPassword())+"' WHERE rut_admin = '"+rut_admin+"'";
+    String sql2 = "UPDATE usuario SET nombre_usuario = '"+txt_nom_admin.getText().trim()+"', tipo_usuario = '"+tipo_admin+"', clave = '"+String.valueOf(txt_password.getPassword())+"' WHERE rut_admin = '"+rut_admin+"'";
     try{
         Statement stm = conn.createStatement();
         Statement stm2 = conn.createStatement();
@@ -464,12 +450,13 @@ public void insertarDatos(){
         pst.setString(2 , cmb_tipo_educacion.getItemAt(seleccionado));
         pst.setString(3 , txt_codigo_establecimiento.getText());
         
-        
+        String tipo_admin = "UTP";
         String SQL2= "insert into usuario(nombre_usuario,tipo_usuario,clave,rut_admin) values (?,?,?,?) ";
         PreparedStatement pst2 =  conn.prepareStatement(SQL2);
         pst2.setString(1 , txt_nom_admin.getText());
-        int seleccionado2 =cmb_tipo_admin.getSelectedIndex();
-        pst2.setString(2 , cmb_tipo_admin.getItemAt(seleccionado2));
+        //int seleccionado2 =cmb_tipo_admin.getSelectedIndex();
+        //pst2.setString(2 , cmb_tipo_admin.getItemAt(seleccionado2));
+        pst2.setString(2,tipo_admin);
         pst2.setString(3 , txt_password.getText());
         pst2.setString(4 , txt_rut.getText());
         
@@ -562,7 +549,6 @@ public void eliminarDatos(){
     private javax.swing.JButton btn_buscar;
     private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_modificar;
-    private javax.swing.JComboBox<String> cmb_tipo_admin;
     private javax.swing.JComboBox<String> cmb_tipo_educacion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -571,7 +557,6 @@ public void eliminarDatos(){
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;

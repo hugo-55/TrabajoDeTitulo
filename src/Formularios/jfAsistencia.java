@@ -44,7 +44,32 @@ public class jfAsistencia extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "No olvide seleccionar el curso para la asistencia", "Asistencia", JOptionPane.INFORMATION_MESSAGE);
     }
     
-        public void obtenerEstablecimiento(){
+        private void obtenerData(){
+        String sql = "select usuario.id_usuario, establecimiento.id_establecimiento ,establecimiento.tipo_educacion from usuario, establecimiento " +
+       "WHERE usuario.id_usuario = establecimiento.id_usuario AND " +
+       "usuario.rut_admin = '"+rut_admin+"'";
+        
+        try{
+           Statement stm = conn.createStatement();
+           ResultSet rs = stm.executeQuery(sql);
+           
+           if(rs.next()){
+               //tipo_educacion = rs.getString("tipo_educacion");
+               //this.tipo_educacion = rs.getString("tipo_educacion");
+               this.id_establecimiento = rs.getString("id_establecimiento");
+           }
+           
+           
+           
+        }catch(SQLException ex){
+            System.out.println("Error sql " +ex);
+        }
+        
+        //System.out.println(tipo_educacion);
+        System.out.println(id_establecimiento);
+    }
+    
+    public void obtenerEstablecimiento(){
         String sql = "SELECT establecimiento.id_establecimiento FROM usuario, establecimiento WHERE  usuario.id_usuario = establecimiento.id_usuario AND rut_admin = '"+rut_admin+"'";
         
         try {
@@ -77,8 +102,10 @@ public class jfAsistencia extends javax.swing.JFrame {
         try{
             String cons = "";
             if (sql.equals("")){
-                //Tiene que filtrar x alumnos del establecimiento en el que se encuentre
-               cons = "SELECT * FROM estudiante, cursos,matriculas WHERE matriculas.cod_curso = cursos.cod_curso AND matriculas.rut_estudiante = estudiante.rut_estudiante"; 
+               //Tiene que filtrar x alumnos del establecimiento en el que se encuentre
+               cons = "SELECT * FROM estudiante, cursos, matriculas WHERE matriculas.cod_curso = cursos.cod_curso AND matriculas.rut_estudiante = estudiante.rut_estudiante"; 
+               //cons = "SELECT * FROM matriculas, estudiante, cursos WHERE matriculas.rut_estudiante = estudiante.rut_estudiante AND matriculas.cod_curso = cursos.cod_curso AND matriculas.id_establecimiento = '"+id_establecimiento;
+               //cons = "SELECT estudiante.rut_estudiante, estudiante.nombres, estudiante.apellidos FROM estudiante, cursos, matriculas WHERE matriculas.cod_curso = cursos.cod_curso AND matriculas.rut_estudiante = estudiante.rut_estudiante AND matriculas.id_establecimiento = '"+ id_establecimiento+"' GROUP BY estudiante.rut_estudiante";
                //cons = "SELECT estudiante.rut_estudiante, estudiante.nombres, estudiante.apellidos, estudiante.fecha_nacimiento, estudiante.sexo FROM estudiante, matriculas where estudiante.rut_estudiante = matriculas.rut_estudiante and matriculas.id_establecimiento = '"+id_establecimiento+"'"; 
             }else{
                 cons = sql;
@@ -378,22 +405,16 @@ public class jfAsistencia extends javax.swing.JFrame {
         
         for (int i = 0; i<jTableAsistencia.getRowCount();i++){
             //Trozo de codigo sacado del if de abajo jTableAsistencia.getSelectedRow()>=0 && 
-            /*Boolean check = false;
-            if(isSelected(i,3,jTableAsistencia)){
-                check = true;
-            }else{
-                check = false;
-            }*/
-            //System.out.println("Pasada numero :"+i);
+            System.out.println(isSelected(i,3,jTableAsistencia));
             if(isSelected(i,3,jTableAsistencia)){
                 //try{
                     //Obtencion de los datos (INICIO)
                     DefaultTableModel tm = (DefaultTableModel)jTableAsistencia.getModel();
                     String estado = "";
                 
-                    String rut = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),0));
-                    String nombre = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),1));
-                    String apellido = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),2));
+                    String rut = String.valueOf(tm.getValueAt(i,0));
+                    String nombre = String.valueOf(tm.getValueAt(i,1));
+                    String apellido = String.valueOf(tm.getValueAt(i,2));
                     //Date fecha = jDateChooser1;
                     SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
                     String fecha =  format1.format(jDateChooser1.getDate());
@@ -411,19 +432,16 @@ public class jfAsistencia extends javax.swing.JFrame {
                     }
                     //Insertado de datos (FINAL)
                     //System.out.println("Salida de try presente");
-                /*}catch(Exception ei){
-                    JOptionPane.showMessageDialog(null, "Error al procesar asistencia"+ei,"Insert",3);
-                }*/
             }else{
                 //try{
-                    System.out.println("Ingreso al try de ausente");
+                    //System.out.println("Ingreso al try de ausente");
                     //Obtencion de los datos (INICIO)
                     DefaultTableModel tm = (DefaultTableModel)jTableAsistencia.getModel();
                     String estado = "";
                 
-                    String rut = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),0));
-                    String nombre = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),1));
-                    String apellido = String.valueOf(tm.getValueAt(jTableAsistencia.getSelectedRow(),2));
+                    String rut = String.valueOf(tm.getValueAt(i,0));
+                    String nombre = String.valueOf(tm.getValueAt(i,1));
+                    String apellido = String.valueOf(tm.getValueAt(i,2));
                     //Date fecha = jDateChooser1;
                     SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
                     String fecha =  format1.format(jDateChooser1.getDate());
@@ -455,7 +473,7 @@ public class jfAsistencia extends javax.swing.JFrame {
         //System.out.println("Clickeado");
         String curso = (String)cbCurso.getSelectedItem();
         llenarTablaAsistenciaFiltrado(curso);
-        llenarTablaAsistenciaPasadaFiltrado(curso);
+        //llenarTablaAsistenciaPasadaFiltrado(curso);
     }//GEN-LAST:event_cbCursoMouseClicked
 
     private void cbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCursoActionPerformed
@@ -468,15 +486,15 @@ public class jfAsistencia extends javax.swing.JFrame {
     
     public void llenarTablaAsistenciaFiltrado(String curso){
         Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));
-        
-        String sql = "SELECT * FROM matriculas,estudiante,cursos WHERE matriculas.cod_curso LIKE '%"+cursoDB+"%' AND matriculas.rut_estudiante = estudiante.rut_estudiante AND matriculas.cod_curso = cursos.cod_curso";
+        //("SELECT * FROM estudiante, cursos, matriculas WHERE matriculas.cod_curso = cursos.cod_curso AND matriculas.rut_estudiante = estudiante.rut_estudiante"; 
+        String sql = "SELECT * FROM matriculas,estudiante,cursos WHERE matriculas.cod_curso LIKE '%"+curso+"%' AND matriculas.rut_estudiante = estudiante.rut_estudiante";
         
         llenarTabla(sql);
     }
     public void llenarTablaAsistenciaPasadaFiltrado(String curso){
         Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));
         
-        String sql = "SELECT * FROM estudiante, asistencia, curso, matriculas  WHERE matriculas.cod_curso = '"+curso+"' AND estudiante.rut_estudiante = matriculas.rut_estudiante AND matriculas.cod_curso = cursos.cod_curso AND matriculas.id_establecimiento = '"+id_establecimiento+"' GROUP by estudiante.rut_estudiante"; 
+        String sql = "SELECT * FROM estudiante, asistencia, cursos, matriculas  WHERE matriculas.cod_curso = '"+curso+"' AND estudiante.rut_estudiante = matriculas.rut_estudiante AND matriculas.cod_curso = cursos.cod_curso AND matriculas.id_establecimiento = '"+id_establecimiento+"' GROUP by estudiante.rut_estudiante"; 
         
         llenarTablaAsistenciaPasada(sql);
     }

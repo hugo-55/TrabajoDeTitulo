@@ -182,7 +182,7 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTableMatriculados);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel4.setText("Alumnos:");
+        jLabel4.setText("Alumnos por rut:");
 
         cmdMatricular.setText("Matricular");
         cmdMatricular.addActionListener(new java.awt.event.ActionListener() {
@@ -213,13 +213,13 @@ public class jfMatricularAlu extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
@@ -305,8 +305,11 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         String busqueda = txtBusqueda.getText().trim();
 
         String sql = "SELECT * FROM estudiante WHERE estudiante.rut_estudiante LIKE '%"+busqueda+"%'";
-
+        
+        //String sql1 = "SELECT * FROM estudiante, matriculas, cursos WHERE estudiante.rut_estudiante LIKE '%"+busqueda+"%' AND matriculas.rut_estudiante = '%"+busqueda+"'%";
+        
         llenarTablaAlumnos(sql);
+        //llenarTablaMatriculas(sql1);
         
     }//GEN-LAST:event_btnBusquedaActionPerformed
     public void llenarTablaAlumnos(String sql){
@@ -431,7 +434,7 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         
         
         String sql_comprobar = "select count(*) as cantidad from matriculas where rut_estudiante = '"+rut+"' and id_establecimiento='"+id_establecimiento+"' and cod_curso = '"+curso+"' and anno = "+annio;
-        JOptionPane.showMessageDialog(this, sql_comprobar);
+        //JOptionPane.showMessageDialog(this, sql_comprobar);
         try {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(sql_comprobar);
@@ -450,26 +453,43 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         
         String sql = "INSERT INTO matriculas (cod_curso, id_establecimiento, rut_estudiante, anno, vtc, estado) "
                 + "VALUES('"+curso+"','"+id_establecimiento+"','"+rut+"',"+annio+",0,'Matriculado')";
-        String sql1 = "SELECT matriculas.rut_estudiante, matriculas.anno FROM matriculas";
+        //String sql1 = "SELECT count(*) as cont FROM matriculas where matriculas.rut_estudiante = '"+rut+"'AND matriculas.anno = '"+annio;
+        String sql1 = "select count(*) as cantidad from matriculas where rut_estudiante = '"+rut+"' and id_establecimiento='"+id_establecimiento+"' and cod_curso != '"+curso+"' and anno = "+annio;
         try {
-            Statement stm = conn.createStatement();
-            stm.executeUpdate(sql);
+            System.out.println("Dentro del try");
             Statement stm1 = conn.createStatement();
-            stm1.executeQuery(sql1);
-            if(rut.equals("matriculas.rut_estudiante") && annio.equals("matriculas.anno")){
-                try{
+            ResultSet res = stm1.executeQuery(sql1);
+            System.out.println("Despues del Query stm1");
+            if(res.next()){
+                System.out.println("Dentro del recorrido Query");
+                int count = res.getInt("cantidad");
+                System.out.println("Contador: "+count);
+                if(count > 0){
+                    System.out.println("Dentro del if");
+                    JOptionPane.showMessageDialog(this,"Este alumno ya se encuentra matriculado para este año","No se pudo matricular",JOptionPane.ERROR_MESSAGE);
+                    return;
+                }else{
+                    System.out.println("Dentro del else para Insertar");
+                    try{
+                        Statement stm = conn.createStatement();
+                        stm.executeUpdate(sql);   
+                        JOptionPane.showMessageDialog(this,"Alumno Matriculado Exitosamente!","Matricula Exitosa",JOptionPane.INFORMATION_MESSAGE);
+                        llenarTablaMatriculas("");
+                    }catch(SQLException e){
+                        JOptionPane.showMessageDialog(this,"Error al matricular al estudiante","Error al matricular",JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+                /*try{
                     //Statement stm1 = conn.createStatement();
                     stm.executeQuery(sql1);
                     JOptionPane.showMessageDialog(this,"Alumno ya se encuentra matriculado","Alumno ya matriculado este año",JOptionPane.ERROR_MESSAGE);
                     //llenarTablaMatriculas("");
                 }catch(SQLException e){
                     JOptionPane.showMessageDialog(this, "Error al matricular alumno","Error al matricular",JOptionPane.ERROR_MESSAGE);
-                }    
-            }
-            JOptionPane.showMessageDialog(this,"Alumno Matriculado Exitosamente!","Matricula Exitosa",JOptionPane.INFORMATION_MESSAGE);
-            llenarTablaMatriculas("");
+                }*/
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this,"Alumno ya se encuentra matriculado para este año","Alumno ya matriculado",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,"Alumno ya se encuentra matriculado","Alumno ya matriculado",JOptionPane.ERROR_MESSAGE);
         }
        
     }//GEN-LAST:event_cmdMatricularActionPerformed
