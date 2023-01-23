@@ -371,7 +371,7 @@ public class jfMatricularAlu extends javax.swing.JFrame {
             
             while(rs.next()){
                 model.addRow( new Object[]{
-                    rs.getString("id_matricula"), rs.getString("rut_estudiante"), rs.getString("nombres"), rs.getString("apellidos"), rs.getString("nombre")
+                    rs.getString("id_matricula"), rs.getString("rut_estudiante"), rs.getString("nombres"), rs.getString("apellidos"), rs.getString("cod_curso")
                 });
             }
             jTableMatriculados.setModel(model);
@@ -440,7 +440,7 @@ public class jfMatricularAlu extends javax.swing.JFrame {
                 int cantidad = rs.getInt("cantidad");
                 
                 if(cantidad > 0){
-                    //JOptionPane.showMessageDialog(this,"Este Alumno ya esta matriculado en este establecimiento este a\u00f1o ","No se pudo Matricular",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this,"Este Alumno ya esta matriculado en este establecimiento este a\u00f1o ","No se pudo Matricular",JOptionPane.WARNING_MESSAGE);
                     return;
                 }
             }
@@ -450,15 +450,26 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         
         String sql = "INSERT INTO matriculas (cod_curso, id_establecimiento, rut_estudiante, anno, vtc, estado) "
                 + "VALUES('"+curso+"','"+id_establecimiento+"','"+rut+"',"+annio+",0,'Matriculado')";
-        
+        String sql1 = "SELECT matriculas.rut_estudiante, matriculas.anno FROM matriculas";
         try {
             Statement stm = conn.createStatement();
             stm.executeUpdate(sql);
-            
+            Statement stm1 = conn.createStatement();
+            stm1.executeQuery(sql1);
+            if(rut.equals("matriculas.rut_estudiante") && annio.equals("matriculas.anno")){
+                try{
+                    //Statement stm1 = conn.createStatement();
+                    stm.executeQuery(sql1);
+                    JOptionPane.showMessageDialog(this,"Alumno ya se encuentra matriculado","Alumno ya matriculado este año",JOptionPane.ERROR_MESSAGE);
+                    //llenarTablaMatriculas("");
+                }catch(SQLException e){
+                    JOptionPane.showMessageDialog(this, "Error al matricular alumno","Error al matricular",JOptionPane.ERROR_MESSAGE);
+                }    
+            }
             JOptionPane.showMessageDialog(this,"Alumno Matriculado Exitosamente!","Matricula Exitosa",JOptionPane.INFORMATION_MESSAGE);
             llenarTablaMatriculas("");
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this,"No se pudo matricular","error al matricular",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,"Alumno ya se encuentra matriculado para este año","Alumno ya matriculado",JOptionPane.ERROR_MESSAGE);
         }
        
     }//GEN-LAST:event_cmdMatricularActionPerformed
@@ -477,34 +488,42 @@ public class jfMatricularAlu extends javax.swing.JFrame {
         }
 
         DefaultTableModel tm = (DefaultTableModel)jTableMatriculados.getModel();
+        System.out.println("Definicion Modelo tabla");
         //Obtencion de Numero de Matricula
         String numMatricula = String.valueOf(tm.getValueAt(jTableMatriculados.getSelectedRow(),0));
         Integer matricula = Integer.parseInt(numMatricula);
+        System.out.println("Obtencion de Numero Matricula");
         //--------------------------------
         //Obtencion de Ruta Alumno
         String rut = String.valueOf(tm.getValueAt(jTableMatriculados.getSelectedRow(), 1));
+        System.out.println("Obtencion de rut");
         //------------------------
         //Obtencion Codigo Curso
-        String curso = (String)cbCurso.getSelectedItem();
-        Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));
+        /*String curso = (String)cbCurso.getSelectedItem();
+        Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));*/
+        String curso = String.valueOf(tm.getValueAt(jTableMatriculados.getSelectedRow(),4));
+        System.out.println("Obtencion del codigo de curso: "+curso);
         //----------------------
         //Obtencion Id establecimiento
         Integer establecimientoDB = Integer.valueOf(obtenerIDEstablecimiento(curso));
+        System.out.println("Obtencion de id establecimiento");
         //----------------------------
         int opcion = JOptionPane.showConfirmDialog(null, "¿Estas Seguro de Eliminar esta Matricula?", "Eliminacion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-
+        
+        
         switch(opcion){
             case 0:
-            String cons = "DELETE FROM matriculas WHERE id_matricula = '"+matricula+"'AND cod_curso = '"+cursoDB+"'AND id_establecimiento = '"+establecimientoDB+"'AND rut_estudiante= '"+rut+"'";
+            String cons = "DELETE FROM matriculas WHERE id_matricula = '"+matricula+"'AND cod_curso = '"+curso+"'AND id_establecimiento = '"+establecimientoDB+"'AND rut_estudiante= '"+rut+"'";
 
             try{
                 Statement stm = conn.createStatement();
                 stm.executeUpdate(cons);
                 JOptionPane.showMessageDialog(null, "Se ha eliminado Correctamente","Eliminacion Concretada", JOptionPane.INFORMATION_MESSAGE);
-                llenarTablaMatriculasFiltrado(curso);
+                llenarTablaMatriculas("");
             }catch(SQLException e) {
                 JOptionPane.showMessageDialog(null, "No se Pudo Eliminar", "Eliminacion Fallida", JOptionPane.ERROR_MESSAGE);
             }
+            
             break;
             case 2:
             JOptionPane.showMessageDialog(null, "Eliminacion Cancelada", "Eliminacion Cancelada",JOptionPane.INFORMATION_MESSAGE);
@@ -512,11 +531,12 @@ public class jfMatricularAlu extends javax.swing.JFrame {
             default:
             System.out.println("Opcion no valida");
         }
+        //llenarTablaMatriculas("");
     }//GEN-LAST:event_cmdEliminarAluActionPerformed
     public void llenarTablaMatriculasFiltrado(String curso){
-        Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));
+        //Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));
         //"SELECT * FROM matriculas, estudiante, cursos WHERE matriculas.rut_estudiante = estudiante.rut_estudiante AND matriculas.cod_curso = cursos.cod_curso";
-        String sql = "SELECT * FROM matriculas,estudiante,cursos WHERE matriculas.cod_curso LIKE '%"+cursoDB+"%' AND matriculas.rut_estudiante = estudiante.rut_estudiante AND matriculas.cod_curso = cursos.cod_curso";
+        String sql = "SELECT * FROM matriculas,estudiante,cursos WHERE matriculas.cod_curso LIKE '%"+curso+"%' AND matriculas.rut_estudiante = estudiante.rut_estudiante AND matriculas.cod_curso = cursos.cod_curso AND matriculas.id_establecimiento = '"+id_establecimiento+"' GROUP by estudiante.rut_estudiante";
 
         llenarTablaMatriculas(sql);
     }
@@ -524,7 +544,7 @@ public class jfMatricularAlu extends javax.swing.JFrame {
     public String obtenerCodigoCurso(String curso){
         String codcurso = "";
         try{
-            String sql = "SELECT cod_curso FROM cursos WHERE cursos.nombre = '"+curso+"'";
+            String sql = "SELECT cod_curso FROM cursos WHERE cursos.nombre= '"+curso+"'";
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(sql);
             
@@ -541,7 +561,7 @@ public class jfMatricularAlu extends javax.swing.JFrame {
     public String obtenerIDEstablecimiento(String curso){
         String idesta="";
         try{
-            String sql = "SELECT id_establecimiento FROM cursos WHERE cursos.nombre = '"+curso+"'";
+            String sql = "SELECT id_establecimiento FROM cursos WHERE cursos.cod_curso = '"+curso+"'";
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(sql);
             

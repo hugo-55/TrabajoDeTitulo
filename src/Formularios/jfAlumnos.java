@@ -87,7 +87,7 @@ public class jfAlumnos extends javax.swing.JFrame {
         try{
             String cons = "";
             if(sql.equals("")){
-                cons = "SELECT estudiante.rut_estudiante, estudiante.nombres, estudiante.apellidos, estudiante.fecha_nacimiento, estudiante.sexo FROM estudiante, matriculas where estudiante.rut_estudiante = matriculas.rut_estudiante and matriculas.id_establecimiento = '"+id_establecimiento+"'";
+                cons = "SELECT * FROM estudiante";
                 System.out.println(cons);
             }else{
                 cons = sql;
@@ -129,9 +129,6 @@ public class jfAlumnos extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txtBusqueda = new javax.swing.JTextField();
         btnBusqueda = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
-        cmbTipoEducacion = new javax.swing.JComboBox<>();
-        btnFiltrarCurso = new javax.swing.JButton();
         panel_alumno = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtRutAlu = new javax.swing.JTextField();
@@ -192,12 +189,6 @@ public class jfAlumnos extends javax.swing.JFrame {
                 btnBusquedaActionPerformed(evt);
             }
         });
-
-        jLabel8.setText("Filtrar pot Curso:");
-
-        cmbTipoEducacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "Septimo", "Octavo" }));
-
-        btnFiltrarCurso.setText("Filtrar");
 
         panel_alumno.setBackground(new java.awt.Color(51, 51, 255));
 
@@ -330,7 +321,7 @@ public class jfAlumnos extends javax.swing.JFrame {
         panel_alumnoLayout.setVerticalGroup(
             panel_alumnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_alumnoLayout.createSequentialGroup()
-                .addGap(38, 38, 38)
+                .addGap(40, 40, 40)
                 .addGroup(panel_alumnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel_alumnoLayout.createSequentialGroup()
                         .addGap(2, 2, 2)
@@ -356,7 +347,7 @@ public class jfAlumnos extends javax.swing.JFrame {
                     .addGroup(panel_alumnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(rbMasc)
                         .addComponent(rbFem)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(panel_alumnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdAgregarAlu)
                     .addComponent(cmdEliminarAlu)
@@ -380,20 +371,12 @@ public class jfAlumnos extends javax.swing.JFrame {
                                 .addComponent(jLabel1)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(cmbTipoEducacion, 0, 189, Short.MAX_VALUE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtBusqueda)))
+                                .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
-                                    .addComponent(btnFiltrarCurso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                                .addComponent(txtBusqueda)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(panel_alumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -410,13 +393,9 @@ public class jfAlumnos extends javax.swing.JFrame {
                             .addComponent(jLabel7)
                             .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnBusqueda))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(cmbTipoEducacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnFiltrarCurso))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(33, 33, 33)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGap(19, 19, 19))
                     .addComponent(panel_alumno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(32, 32, 32)
                 .addComponent(cmdAtras)
@@ -427,7 +406,7 @@ public class jfAlumnos extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -740,9 +719,7 @@ public class jfAlumnos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBusqueda;
-    private javax.swing.JButton btnFiltrarCurso;
     private javax.swing.ButtonGroup btnGroupSexo;
-    private javax.swing.JComboBox<String> cmbTipoEducacion;
     private javax.swing.JButton cmdAgregarAlu;
     private javax.swing.JButton cmdAtras;
     private javax.swing.JButton cmdEliminarAlu;
@@ -755,7 +732,6 @@ public class jfAlumnos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;

@@ -24,6 +24,7 @@ public class jfAsistencia extends javax.swing.JFrame {
     Statement stm=null;
     Conexion conex = new Conexion();
     Connection conn = (Connection) conex.realizarConexion();
+    String rut_admin, id_establecimiento;
 
     /**
      * Creates new form jfAsistencia
@@ -33,15 +34,39 @@ public class jfAsistencia extends javax.swing.JFrame {
         llenarTabla("");
         llenarTablaAsistenciaPasada("");
         JOptionPane.showMessageDialog(null, "No olvide seleccionar el curso para la asistencia", "Asistencia", JOptionPane.INFORMATION_MESSAGE);
-        
-        
-        
-        
-        
+           
     }
+    public jfAsistencia(String rut_admin){
+        this.rut_admin = rut_admin;
+        initComponents();
+        llenarTabla("");
+        llenarTablaAsistenciaPasada("");
+        JOptionPane.showMessageDialog(null, "No olvide seleccionar el curso para la asistencia", "Asistencia", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+        public void obtenerEstablecimiento(){
+        String sql = "SELECT establecimiento.id_establecimiento FROM usuario, establecimiento WHERE  usuario.id_usuario = establecimiento.id_usuario AND rut_admin = '"+rut_admin+"'";
+        
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            
+            if(rs.next()){
+                this.id_establecimiento = rs.getString("id_establecimiento");
+            }
+            
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al Obtener ID establecimiento "+ex, "Error de obtencion", JOptionPane.ERROR_MESSAGE);
+        }
+    
+    
+    }
+    
     public void llenarTabla(String sql){
         DefaultTableModel model = new DefaultTableModel();
         jTableAsistencia.setModel(model);
+        
         
         
         model.addColumn("Rut");
@@ -52,7 +77,9 @@ public class jfAsistencia extends javax.swing.JFrame {
         try{
             String cons = "";
             if (sql.equals("")){
+                //Tiene que filtrar x alumnos del establecimiento en el que se encuentre
                cons = "SELECT * FROM estudiante, cursos,matriculas WHERE matriculas.cod_curso = cursos.cod_curso AND matriculas.rut_estudiante = estudiante.rut_estudiante"; 
+               //cons = "SELECT estudiante.rut_estudiante, estudiante.nombres, estudiante.apellidos, estudiante.fecha_nacimiento, estudiante.sexo FROM estudiante, matriculas where estudiante.rut_estudiante = matriculas.rut_estudiante and matriculas.id_establecimiento = '"+id_establecimiento+"'"; 
             }else{
                 cons = sql;
             }
@@ -71,11 +98,11 @@ public class jfAsistencia extends javax.swing.JFrame {
         }
         try{
             DefaultComboBoxModel modelo = new DefaultComboBoxModel();
-            String sql2 = "SELECT nombre FROM cursos";
+            String sql2 = "SELECT cod_curso FROM cursos";
             stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(sql2);
             while (rs.next()) {
-                modelo.addElement(rs.getString("nombre"));
+                modelo.addElement(rs.getString("cod_curso"));
                 cbCurso.setModel(modelo);
             }
         }catch(SQLException ex){
@@ -332,6 +359,7 @@ public class jfAsistencia extends javax.swing.JFrame {
     }
     private void cmdAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAtrasActionPerformed
         dispose();
+        new GestorFrame(rut_admin).setVisible(true);
     }//GEN-LAST:event_cmdAtrasActionPerformed
 
     private void txtBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBusquedaActionPerformed
@@ -427,6 +455,7 @@ public class jfAsistencia extends javax.swing.JFrame {
         //System.out.println("Clickeado");
         String curso = (String)cbCurso.getSelectedItem();
         llenarTablaAsistenciaFiltrado(curso);
+        llenarTablaAsistenciaPasadaFiltrado(curso);
     }//GEN-LAST:event_cbCursoMouseClicked
 
     private void cbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCursoActionPerformed
@@ -444,13 +473,13 @@ public class jfAsistencia extends javax.swing.JFrame {
         
         llenarTabla(sql);
     }
-    /*public void llenarTablaAsistenciaPasadaFiltrado(String curso){
+    public void llenarTablaAsistenciaPasadaFiltrado(String curso){
         Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));
         
-        String sql = "SELECT * FROM estudiante, asistencia WHERE estudiante.rut_estudiante = asistencia.rut_estudiante"; 
+        String sql = "SELECT * FROM estudiante, asistencia, curso, matriculas  WHERE matriculas.cod_curso = '"+curso+"' AND estudiante.rut_estudiante = matriculas.rut_estudiante AND matriculas.cod_curso = cursos.cod_curso AND matriculas.id_establecimiento = '"+id_establecimiento+"' GROUP by estudiante.rut_estudiante"; 
         
         llenarTablaAsistenciaPasada(sql);
-    }*/
+    }
     public String obtenerCodigoCurso(String curso){
         String codcurso = "";
         try{

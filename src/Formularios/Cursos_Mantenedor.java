@@ -581,7 +581,7 @@ public class Cursos_Mantenedor extends javax.swing.JFrame {
                     break;
             }
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "No se pudo Eliminar el Curso", "Error de Eliminacion", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se pudo Eliminar el Curso, Debe estar sin alumnos", "Error de Eliminacion", JOptionPane.ERROR_MESSAGE);
         }
         
         
