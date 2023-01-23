@@ -134,14 +134,6 @@ public class Cursos_Mantenedor extends javax.swing.JFrame {
             }
        }
        
-       
-        
-               
-                
-               
-               
-           
-
     }
     
     
@@ -512,7 +504,8 @@ public class Cursos_Mantenedor extends javax.swing.JFrame {
     
     
     private void btn_atrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_atrasActionPerformed
-        dispose();        // TODO add your handling code here:
+        dispose();
+        new GestorFrame(rut_admin).setVisible(true);
     }//GEN-LAST:event_btn_atrasActionPerformed
 
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
