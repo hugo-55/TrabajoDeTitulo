@@ -5,11 +5,15 @@
 package Formularios;
 
 import java.awt.Checkbox;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -33,6 +37,7 @@ public class jfAsistencia extends javax.swing.JFrame {
         initComponents();
         llenarTabla("");
         llenarTablaAsistenciaPasada("");
+        filtrarxCurso();
         JOptionPane.showMessageDialog(null, "No olvide seleccionar el curso para la asistencia", "Asistencia", JOptionPane.INFORMATION_MESSAGE);
            
     }
@@ -41,10 +46,33 @@ public class jfAsistencia extends javax.swing.JFrame {
         initComponents();
         llenarTabla("");
         llenarTablaAsistenciaPasada("");
+        jDateChooser1.setMaxSelectableDate(new Date());
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        jDateChooser1.setDate(new Date());
+        filtrarxCurso();
+        /*try{
+            Date fechaSeleccionada = format1.parse("2000-01-01");
+            jDateChooser1.setDate(fechaSeleccionada);
+        }catch(ParseException ex){
+            System.out.println("Error de Parseo");
+        }*/
         JOptionPane.showMessageDialog(null, "No olvide seleccionar el curso para la asistencia", "Asistencia", JOptionPane.INFORMATION_MESSAGE);
     }
     
-        private void obtenerData(){
+    public void filtrarxCurso(){
+        cbCurso.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String curso = (String)cbCurso.getSelectedItem();
+                llenarTablaAsistenciaFiltrado(curso);
+                llenarTablaAsistenciaPasadaFiltrado(curso);
+                //System.out.println(curso);
+            }
+        });
+
+    }
+    
+    private void obtenerData(){
         String sql = "select usuario.id_usuario, establecimiento.id_establecimiento ,establecimiento.tipo_educacion from usuario, establecimiento " +
        "WHERE usuario.id_usuario = establecimiento.id_usuario AND " +
        "usuario.rut_admin = '"+rut_admin+"'";
@@ -348,8 +376,8 @@ public class jfAsistencia extends javax.swing.JFrame {
         model.addColumn("Apellido");
         model.addColumn("Fecha");
         model.addColumn("Asistencia");
-        model.addColumn("");
-        addCheckedBox(5,jTableAsistenciaPasada);
+        //model.addColumn("");
+        //addCheckedBox(5,jTableAsistenciaPasada);
         //Checkbox checkbox1 = new Checkbox();
         
         try{
@@ -366,9 +394,6 @@ public class jfAsistencia extends javax.swing.JFrame {
                     res.getString("rut_estudiante"),res.getString("nombres"),res.getString("apellidos"),res.getDate("fecha"),res.getString("estado"),
                     
                 });
-                if("estado".equals("Presente")){
-                    addCheckedBox(5,jTableAsistenciaPasada);
-                }
             }
             jTableAsistenciaPasada.setModel(model);
         }catch(SQLException ex){
@@ -394,11 +419,11 @@ public class jfAsistencia extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBusquedaActionPerformed
 
     private void btnBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBusquedaActionPerformed
-        /*String busqueda = txtBusqueda.getText().trim();
-
-        String sql = "SELECT * FROM estudiante WHERE estudiante.nombres LIKE '%"+busqueda+"%'";
-
-        llenarTabla(sql);*/
+        String busqueda = txtBusqueda.getText().trim();
+        
+        String sql = "SELECT * FROM estudiante, matriculas, cursos WHERE matriculas.cod_curso = cursos.cod_curso AND estudiante.rut_estudiante = matriculas.rut_estudiante AND estudiante.rut_estudiante LIKE '%"+busqueda+"%'";
+        
+        llenarTabla(sql);
     }//GEN-LAST:event_btnBusquedaActionPerformed
 
     private void cmdAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAsistenciaActionPerformed
@@ -471,11 +496,12 @@ public class jfAsistencia extends javax.swing.JFrame {
     
     private void cbCursoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbCursoMouseClicked
         //System.out.println("Clickeado");
-        String curso = (String)cbCurso.getSelectedItem();
-        llenarTablaAsistenciaFiltrado(curso);
+        /*String curso = (String)cbCurso.getSelectedItem();
+        System.out.println(curso);
+        llenarTablaAsistenciaFiltrado(curso);*/
         //llenarTablaAsistenciaPasadaFiltrado(curso);
     }//GEN-LAST:event_cbCursoMouseClicked
-
+    
     private void cbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCursoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbCursoActionPerformed
@@ -485,16 +511,15 @@ public class jfAsistencia extends javax.swing.JFrame {
     }
     
     public void llenarTablaAsistenciaFiltrado(String curso){
-        Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));
+        //System.out.println("Impresion en tabla filtrada");
         //("SELECT * FROM estudiante, cursos, matriculas WHERE matriculas.cod_curso = cursos.cod_curso AND matriculas.rut_estudiante = estudiante.rut_estudiante"; 
-        String sql = "SELECT * FROM matriculas,estudiante,cursos WHERE matriculas.cod_curso LIKE '%"+curso+"%' AND matriculas.rut_estudiante = estudiante.rut_estudiante";
-        
+        String sql = "SELECT * FROM matriculas,estudiante,cursos WHERE matriculas.cod_curso = '"+curso+"' AND matriculas.rut_estudiante = estudiante.rut_estudiante GROUP by estudiante.rut_estudiante";
+        System.out.println(sql);
         llenarTabla(sql);
     }
     public void llenarTablaAsistenciaPasadaFiltrado(String curso){
-        Integer cursoDB = Integer.valueOf(obtenerCodigoCurso(curso));
         
-        String sql = "SELECT * FROM estudiante, asistencia, cursos, matriculas  WHERE matriculas.cod_curso = '"+curso+"' AND estudiante.rut_estudiante = matriculas.rut_estudiante AND matriculas.cod_curso = cursos.cod_curso AND matriculas.id_establecimiento = '"+id_establecimiento+"' GROUP by estudiante.rut_estudiante"; 
+        String sql = "SELECT * FROM estudiante, asistencia, matriculas  WHERE matriculas.cod_curso = '"+curso+"' AND estudiante.rut_estudiante = matriculas.rut_estudiante GROUP by estudiante.rut_estudiante"; 
         
         llenarTablaAsistenciaPasada(sql);
     }
